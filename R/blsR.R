@@ -41,7 +41,16 @@ query_n_series <- function(
 
 .build_payload <- function(){
   # tell the API what we want
-
+  payload = list()
+  if(!is.na(series)) payload[['seriesid']] = series
+  if(!is.na(start_year)) payload[['startyear']] = start_year
+  if(!is.na(end_year)) payload[['endyear']] = end_year
+  if(!is.na(catalog)) payload[['catalog']] = catalog
+  if(!is.na(calculations)) payload[['calculations']] = calculations
+  if(!is.na(annualaverage)) payload[['annualaverage']] = annualaverage
+  if(!is.na(aspects)) payload[['aspects']] = aspects
+  if(!is.na(registrationkey)) payload[['registrationkey']] = registrationkey
+  return(payload)
 }
 
 query_popular_series <- function(survey = NA){
