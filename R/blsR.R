@@ -57,8 +57,31 @@ query_popular_series <- function(survey = NA){
   )
 }
 
-query_all_surveys <- function(){}
+query_all_surveys <- function(){
+  api_url <- .api_uri_root()
+  url_path <- c(api_url$path, 'surveys')
 
-query_survey_info <- function(){}
+  list(
+    is_complex = FALSE,
+    url = httr::modify_url(api_url, path = url_path)
+  )
+}
 
-query_latest_observation <- function(){}
+query_survey_info <- function(survey_id){
+  #TO DO: throw an error if survey_id is missing
+  api_url <- .api_uri_root()
+  url_path <- c(api_url$path, 'surveys',survey_id)
+
+  list(
+    is_complex = FALSE,
+    url = httr::modify_url(api_url, path = url_path)
+  )
+}
+
+query_latest_observation <- function(series_id){
+  #we can re-use query_series here
+  query <- query_series(series_id)
+  query[['url']] <- httr::modify_url(query[['url']], query = list(latest = TRUE))
+
+  return(query)
+}
