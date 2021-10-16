@@ -3,7 +3,8 @@
   httr::parse_url('https://api.bls.gov/publicAPI/v2')
 }
 
-blsR <- function(registrationkey = NA){
+blsR <- function(api_key = NA, user_agent = 'http://github.com/groditi/blsR' ){
+  ua <-  httr::user_agent(user_agent)
   #return a closure that makes the http request and processes the response.
   #API keys expire but URLs and payloads have no other temporality associated.
   #separate the part that uses API key into instance-level data so queries can
@@ -16,40 +17,67 @@ blsR <- function(registrationkey = NA){
     #its missing but for complex ones with multiple series requested it should
     #inject the  key into the payload
     if(query$is_complex == FALSE){
-      response <- httr::GET(query$url)
-      #TODO: do something with the response and return
+      response <- httr::GET(query$url, ua)
+      return(.process_response(response))
     }
 
 
     if('payload' %in% names(query)){
       if('series' %in% names(query$payload)){
         if(is.na(registrationkey))
-          warning('registrationkey is required for multiple series requests.')
-        query$payload[['registrationkey']] = registrationkey
+          warning('api_key is required for multiple series requests.')
+        query$payload[['registrationkey']] = api_key
       }
     }
 
-    response <- httr::POST(url = query$url, body = query$payload, encode = "json")
-    #TODO: do something with the response and return
+    response <- httr::POST(url=query$url, ua, body=query$payload, encode="json")
+    return(.pricess_response(response))
   }
 
 }
 
-.process_response <- function(json_response){
-  response <- fromJSON(response)
+.process_response <- function(response){
 
-  #stop here if request wasn't successful
-  if(response$status != 'REQUEST_SUCCEEDED') {
-    stop(paste(request$message, '; '))
+  #die if the format of the response content isnt json
+  if(httr::http_type(response) != "application/json"){
+    stop("http request did not return json", call. = FALSE)
   }
 
-  results <- response$Results
+  json_response <- jsonlite::fromJSON(
+    httr::content(response, 'text'), simplifyVector=FALSE
+  )
+
+  #die if request wasn't successful
+  if(json_response$status != 'REQUEST_SUCCEEDED') {
+    stop(paste(json_response$message, '; '), call. = FALSE)
+  }
+  results <- json_response$Results
+
+  #survey type requests
   if('survey' %in% names(results)){
-    if(length(results$survey) == 1) rerturn(results$survey[1])
-    if(length(results$survey) > 1) rerturn(results$survey)
+    if(length(results$survey) == 1) return(results$survey[[1]])
+    if(length(results$survey) > 1){
+      return(dplyr::bind_rows(results$survey))
+    }
   }
 
-  #TODO process series responses
+
+  if('series' %in% names(results)){
+    #popular series request
+    if(! 'data' %in% names(results$series[[1]])){
+      return(dplyr::bind_rows(results$series))
+    }
+
+    series_ids <- sapply(results$series, function(x) return(x$seriesID))
+    series_data <- lapply(results$series, .process_timeseries)
+    names(series_data) <- series_ids
+    return(series_data)
+  }
+}
+
+.process_timeseries <- function(series){
+  series[['observations']] <- dplyr::bind_rows(series$data)
+  return(series)
 }
 
 query_series <- function(series_id){
