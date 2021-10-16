@@ -15,11 +15,41 @@ blsR <- function(registrationkey = NA){
     #the BLS API key. simple requests that don't need it should be run even if
     #its missing but for complex ones with multiple series requested it should
     #inject the  key into the payload
+    if(query$is_complex == FALSE){
+      response <- httr::GET(query$url)
+      #TODO: do something with the response and return
+    }
 
 
+    if('payload' %in% names(query)){
+      if('series' %in% names(query$payload)){
+        if(is.na(registrationkey))
+          warning('registrationkey is required for multiple series requests.')
+        query$payload[['registrationkey']] = registrationkey
+      }
+    }
+
+    response <- httr::POST(url = query$url, body = query$payload, encode = "json")
+    #TODO: do something with the response and return
   }
 
+}
 
+.process_response <- function(json_response){
+  response <- fromJSON(response)
+
+  #stop here if request wasn't successful
+  if(response$status != 'REQUEST_SUCCEEDED') {
+    stop(paste(request$message, '; '))
+  }
+
+  results <- response$Results
+  if('survey' %in% names(results)){
+    if(length(results$survey) == 1) rerturn(results$survey[1])
+    if(length(results$survey) > 1) rerturn(results$survey)
+  }
+
+  #TODO process series responses
 }
 
 query_series <- function(series_id){
@@ -40,7 +70,7 @@ query_n_series <- function(
 
   api_url <- .api_uri_root()
   url_path <- c(api_url$path, 'timeseries','data')
-  payload = build_payload(
+  payload <- .build_payload(
     series, start_year, end_year, catalog, calculations, annualaverage, aspects
   )
 
@@ -55,7 +85,7 @@ query_n_series <- function(
 .build_payload <- function(){
   # tell the API what we want
   payload = list()
-  if(!is.na(series)) payload[['seriesid']] = series
+  if(!is.na(series)) payload[['seriesid']] = c(series)
   if(!is.na(start_year)) payload[['startyear']] = start_year
   if(!is.na(end_year)) payload[['endyear']] = end_year
   if(!is.na(catalog)) payload[['catalog']] = catalog
@@ -90,7 +120,7 @@ query_all_surveys <- function(){
 }
 
 query_survey_info <- function(survey_id){
-  #TO DO: throw an error if survey_id is missing
+  #TODO: throw an error if survey_id is missing
   api_url <- .api_uri_root()
   url_path <- c(api_url$path, 'surveys',survey_id)
 
