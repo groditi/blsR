@@ -31,7 +31,7 @@ blsR <- function(api_key = NA, user_agent = 'http://github.com/groditi/blsR' ){
     }
 
     response <- httr::POST(url=query$url, ua, body=query$payload, encode="json")
-    return(.pricess_response(response))
+    return(.process_response(response))
   }
 
 }
