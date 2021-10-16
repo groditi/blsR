@@ -37,6 +37,19 @@ query_n_series <- function(
   series, start_year=NA, end_year=NA, catalog = FALSE, calculations = FALSE,
   annualaverage = FALSE, aspects = FALSE){
   #request multiple series and optional series-level information
+
+  api_url <- .api_uri_root()
+  url_path <- c(api_url$path, 'timeseries','data')
+  payload = build_payload(
+    series, start_year, end_year, catalog, calculations, annualaverage, aspects
+  )
+
+  list(
+    is_complex = TRUE,
+    url = httr::modify_url(api_url, path = url_path),
+    payload = payload
+  )
+
 }
 
 .build_payload <- function(){
@@ -49,7 +62,7 @@ query_n_series <- function(
   if(!is.na(calculations)) payload[['calculations']] = calculations
   if(!is.na(annualaverage)) payload[['annualaverage']] = annualaverage
   if(!is.na(aspects)) payload[['aspects']] = aspects
-  if(!is.na(registrationkey)) payload[['registrationkey']] = registrationkey
+  #if(!is.na(registrationkey)) payload[['registrationkey']] = registrationkey
   return(payload)
 }
 
