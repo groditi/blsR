@@ -23,8 +23,14 @@ blsR <- function(registrationkey = NA){
 }
 
 query_series <- function(series_id){
-    #query a singular series (easy GET from JSON URI)
+  #query a singular series (easy GET from JSON URI)
+  api_url <- .api_uri_root()
+  url_path <- c(api_url$path, 'timeseries','data', series_id)
 
+  list(
+    is_complex = FALSE,
+    url = httr::modify_url(api_url, path = url_path)
+  )
 }
 
 query_n_series <- function(
@@ -38,8 +44,17 @@ query_n_series <- function(
 
 }
 
-query_popular_series <- function(survey = na()){
+query_popular_series <- function(survey = NA){
+  #query for popular series (optional: from a specific survey)
+  api_url <- .api_uri_root()
+  url_path <- c(api_url$path, 'timeseries','popular')
+  if(!is.na(survey))
+    api_url <- httr::modify_url(api_url, query = list(survey = survey))
 
+  list(
+    is_complex = FALSE,
+    url = httr::modify_url(api_url, path = url_path)
+  )
 }
 
 query_all_surveys <- function(){}
