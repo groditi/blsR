@@ -90,10 +90,10 @@ query_n_series <- function(
   if(!is.na(series) && length(series) >= 1) payload[['seriesid']] = c(series)
   if(!is.na(start_year)) payload[['startyear']] = start_year
   if(!is.na(end_year)) payload[['endyear']] = end_year
-  if(is.TRUE(catalog)) payload[['catalog']] = catalog
-  if(is.TRUE(calculations)) payload[['calculations']] = calculations
-  if(is.TRUE(annualaverage)) payload[['annualaverage']] = annualaverage
-  if(is.TRUE(aspects)) payload[['aspects']] = aspects
+  if(isTRUE(catalog)) payload[['catalog']] = catalog
+  if(isTRUE(calculations)) payload[['calculations']] = calculations
+  if(isTRUE(annualaverage)) payload[['annualaverage']] = annualaverage
+  if(isTRUE(aspects)) payload[['aspects']] = aspects
   #if(!is.na(registrationkey)) payload[['registrationkey']] = registrationkey
   return(payload)
 }
