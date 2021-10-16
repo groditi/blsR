@@ -1,5 +1,5 @@
 Package: blsR
-Title: What the Package Does (One Line, Title Case)
+Title: Make Requests From The BLS API 
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Guillermo",
@@ -7,8 +7,9 @@ Authors@R:
            role = c("aut", "cre"),
            email = "guillermo@newriverinvestments.com",
            comment = c(ORCID = "0000-0002-7127-8742"))
-Description: What the package does (one paragraph).
-License: LGPL + file LICENSE
+Description: Implements v2 of the BLS API for requests of survey information and
+  time series data.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
