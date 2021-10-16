@@ -82,16 +82,18 @@ query_n_series <- function(
 
 }
 
-.build_payload <- function(){
+.build_payload <- function(
+  series=NA, start_year=NA, end_year=NA, catalog = FALSE, calculations = FALSE,
+  annualaverage = FALSE, aspects = FALSE){
   # tell the API what we want
   payload = list()
-  if(!is.na(series)) payload[['seriesid']] = c(series)
+  if(!is.na(series) && length(series) >= 1) payload[['seriesid']] = c(series)
   if(!is.na(start_year)) payload[['startyear']] = start_year
   if(!is.na(end_year)) payload[['endyear']] = end_year
-  if(!is.na(catalog)) payload[['catalog']] = catalog
-  if(!is.na(calculations)) payload[['calculations']] = calculations
-  if(!is.na(annualaverage)) payload[['annualaverage']] = annualaverage
-  if(!is.na(aspects)) payload[['aspects']] = aspects
+  if(is.TRUE(catalog)) payload[['catalog']] = catalog
+  if(is.TRUE(calculations)) payload[['calculations']] = calculations
+  if(is.TRUE(annualaverage)) payload[['annualaverage']] = annualaverage
+  if(is.TRUE(aspects)) payload[['aspects']] = aspects
   #if(!is.na(registrationkey)) payload[['registrationkey']] = registrationkey
   return(payload)
 }
