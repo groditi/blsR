@@ -4,7 +4,21 @@
 }
 
 blsR <- function(registrationkey = NA){
-    #return a closure that makes the http request and processes the response
+  #return a closure that makes the http request and processes the response.
+  #API keys expire but URLs and payloads have no other temporality associated.
+  #separate the part that uses API key into instance-level data so queries can
+  #be safely serialized or stored without leaking private API data or storing
+  #a stale key. It's not the prettiest or very R-like, but it works.
+
+  function(query){
+    #the query object should contain all it needs to make the request except
+    #the BLS API key. simple requests that don't need it should be run even if
+    #its missing but for complex ones with multiple series requested it should
+    #inject the  key into the payload
+
+
+  }
+
 
 }
 
