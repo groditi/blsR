@@ -167,3 +167,44 @@ query_latest_observation <- function(series_id){
 
   return(query)
 }
+
+flatten_observations <- function(series){
+  #remove period and period name
+  obs <- lapply(series, function(x) tidy_periods(x$observations))
+
+  join_by <- c('year')
+  if('month' %in% names(obs[[1]]))
+    join_by <- c('year', 'month')
+  if('quarter' %in% names(obs[[1]]))
+    join_by <- c('year', 'quarter')
+
+  #TODO: rewrite this in base R to drop dependencies
+  table <- purrr::reduce(
+    purrr::imap(obs, ~dplyr::select(.x, join_by, !!rlang::as_name(.y) := 'value')),
+    dplyr::left_join,
+    by = join_by
+  )
+  return(table)
+}
+
+tidy_periods <- function(observations){
+  if( substr(observations$period[1], 1, 1) == 'A'){
+    return(dplyr::select(observations, year,value))
+  }
+  if( substr(observations$period[1], 1, 1) == 'M'){
+    return(
+      dplyr::select(
+        dplyr::mutate(observations, month = as.numeric(substr(period, 2, 3))),
+        year, month, value
+      )
+    )
+  }
+  if( substr(observations$period[1], 1, 1) == 'Q'){
+    return(
+      dplyr::select(
+        dplyr::mutate(observations, quarter = as.numeric(substr(period, 2, 3))),
+        year, quarter, value
+      )
+    )
+  }
+}
