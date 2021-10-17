@@ -1,7 +1,32 @@
-
-.api_uri_root <- function(){
-  httr::parse_url('https://api.bls.gov/publicAPI/v2')
-}
+#' Retrieve Data From the U.S. Bureau Of Labor Statistics API v2
+#'
+#' @description
+#'
+#' `blsR()` constructs a function that will execute queries against the BLS API.
+#' Queries are generated using one of the query-generating functions and then
+#' passed on to the retriever function returned by `blsR()`. The retriever
+#' function will return the requested data.
+#'
+#' @param api_key string, only necessary for retrieving multiple series in one
+#' request, requesting calculations, or custom time frames and catalog data
+#' @param user_agent string, optional
+#'
+#' @return a retriever function that handles the API's http request and response.
+#' @export
+#'
+#' @examples
+#' library(blsR)
+#' retriever <- blsR()
+#' unemployment_rate_query <- query_series('LNS14000000') #a monthly data series
+#' results <- retriever(unemployment_rate_query) #a list of data series and metadata
+#' unemployment_tibble <- flatten_observations(results)
+#'
+#' \dontrun{
+#' retriever <- blsR('your-api-key-goes-here')
+#' multiple_series_query <- query_n_series(c('LNS14000000', 'LNS14000001'))
+#' results <- retriever(multiple_series_query) #a list of data series and metadata
+#' multiple_series_tibble <- flatten_observations(results)
+#' }
 
 blsR <- function(api_key = NA, user_agent = 'http://github.com/groditi/blsR' ){
   ua <-  httr::user_agent(user_agent)
@@ -80,131 +105,3 @@ blsR <- function(api_key = NA, user_agent = 'http://github.com/groditi/blsR' ){
   return(series)
 }
 
-query_series <- function(series_id){
-  #query a singular series (easy GET from JSON URI)
-  api_url <- .api_uri_root()
-  url_path <- c(api_url$path, 'timeseries','data', series_id)
-
-  list(
-    is_complex = FALSE,
-    url = httr::modify_url(api_url, path = url_path)
-  )
-}
-
-query_n_series <- function(
-  series, start_year=NA, end_year=NA, catalog = FALSE, calculations = FALSE,
-  annualaverage = FALSE, aspects = FALSE){
-  #request multiple series and optional series-level information
-
-  api_url <- .api_uri_root()
-  url_path <- c(api_url$path, 'timeseries','data')
-  payload <- .build_payload(
-    series, start_year, end_year, catalog, calculations, annualaverage, aspects
-  )
-
-  list(
-    is_complex = TRUE,
-    url = httr::modify_url(api_url, path = url_path),
-    payload = payload
-  )
-
-}
-
-.build_payload <- function(
-  series=NA, start_year=NA, end_year=NA, catalog = FALSE, calculations = FALSE,
-  annualaverage = FALSE, aspects = FALSE){
-  # tell the API what we want
-  payload = list()
-  if(!is.na(series) && length(series) >= 1) payload[['seriesid']] = c(series)
-  if(!is.na(start_year)) payload[['startyear']] = start_year
-  if(!is.na(end_year)) payload[['endyear']] = end_year
-  if(isTRUE(catalog)) payload[['catalog']] = catalog
-  if(isTRUE(calculations)) payload[['calculations']] = calculations
-  if(isTRUE(annualaverage)) payload[['annualaverage']] = annualaverage
-  if(isTRUE(aspects)) payload[['aspects']] = aspects
-  #if(!is.na(registrationkey)) payload[['registrationkey']] = registrationkey
-  return(payload)
-}
-
-query_popular_series <- function(survey = NA){
-  #query for popular series (optional: from a specific survey)
-  api_url <- .api_uri_root()
-  url_path <- c(api_url$path, 'timeseries','popular')
-  if(!is.na(survey))
-    api_url <- httr::modify_url(api_url, query = list(survey = survey))
-
-  list(
-    is_complex = FALSE,
-    url = httr::modify_url(api_url, path = url_path)
-  )
-}
-
-query_all_surveys <- function(){
-  api_url <- .api_uri_root()
-  url_path <- c(api_url$path, 'surveys')
-
-  list(
-    is_complex = FALSE,
-    url = httr::modify_url(api_url, path = url_path)
-  )
-}
-
-query_survey_info <- function(survey_id){
-  #TODO: throw an error if survey_id is missing
-  api_url <- .api_uri_root()
-  url_path <- c(api_url$path, 'surveys',survey_id)
-
-  list(
-    is_complex = FALSE,
-    url = httr::modify_url(api_url, path = url_path)
-  )
-}
-
-query_latest_observation <- function(series_id){
-  #we can re-use query_series here
-  query <- query_series(series_id)
-  query[['url']] <- httr::modify_url(query[['url']], query = list(latest = TRUE))
-
-  return(query)
-}
-
-flatten_observations <- function(series){
-  #remove period and period name
-  obs <- lapply(series, function(x) tidy_periods(x$observations))
-
-  join_by <- c('year')
-  if('month' %in% names(obs[[1]]))
-    join_by <- c('year', 'month')
-  if('quarter' %in% names(obs[[1]]))
-    join_by <- c('year', 'quarter')
-
-  #TODO: rewrite this in base R to drop dependencies
-  table <- purrr::reduce(
-    purrr::imap(obs, ~dplyr::select(.x, join_by, !!rlang::as_name(.y) := 'value')),
-    dplyr::left_join,
-    by = join_by
-  )
-  return(table)
-}
-
-tidy_periods <- function(observations){
-  if( substr(observations$period[1], 1, 1) == 'A'){
-    return(dplyr::select(observations, year,value))
-  }
-  if( substr(observations$period[1], 1, 1) == 'M'){
-    return(
-      dplyr::select(
-        dplyr::mutate(observations, month = as.numeric(substr(period, 2, 3))),
-        year, month, value
-      )
-    )
-  }
-  if( substr(observations$period[1], 1, 1) == 'Q'){
-    return(
-      dplyr::select(
-        dplyr::mutate(observations, quarter = as.numeric(substr(period, 2, 3))),
-        year, quarter, value
-      )
-    )
-  }
-}
