@@ -31,7 +31,7 @@
 #'
 #' @return list of query parameters
 #'
-#' @family <blsR-queries>
+#' @family blsR-queries
 #'
 #' @export
 #'
@@ -42,7 +42,7 @@ query_series <- function(series_id, start_year=NA, end_year=NA){
   #query a singular series (easy GET from JSON URI)
   api_url <- .api_uri_root()
   url_path <- c(api_url$path, 'timeseries','data', series_id)
-  payload <- .build_payload(start_year, end_year)
+  payload <- .build_payload(start_year = start_year, end_year = end_year)
 
   list(
     is_complex = FALSE,
@@ -63,7 +63,7 @@ query_series <- function(series_id, start_year=NA, end_year=NA){
 #'
 #' @return list of query parameters
 #'
-#' @family <blsR-queries>
+#' @family blsR-queries
 #'
 #' @export
 #'
@@ -93,7 +93,7 @@ query_n_series <- function(
 #'
 #' @return list of query parameters
 #'
-#' @family <blsR-queries>
+#' @family blsR-queries
 #'
 #' @export
 #'
@@ -118,7 +118,7 @@ query_popular_series <- function(survey_id = NA){
 #'
 #' @return list of query parameters
 #'
-#' @family <blsR-queries>
+#' @family blsR-queries
 #'
 #' @export
 
@@ -134,11 +134,11 @@ query_all_surveys <- function(){
 
 #' Create a query to retrieve information about a survey
 #'
-#' @param survey_id
+#' @param survey_id BLS survey abbreviation (two letter code)
 #'
 #' @return list of query parameters
 #'
-#' @family <blsR-queries>
+#' @family blsR-queries
 #'
 #' @export
 #'
@@ -156,11 +156,11 @@ query_survey_info <- function(survey_id){
 
 #' Create a Query to retrieve the latest observation for a time series
 #'
-#' @param series_id
+#' @param series_id BLS series ID
 #'
 #' @return list of query parameters
 #'
-#' @family <blsR-queries>
+#' @family blsR-queries
 #'
 #' @export
 #'

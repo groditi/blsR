@@ -16,7 +16,7 @@
 #'
 #' @return a list of information returned by the API request
 #'
-#' @family <blsR-requests>
+#' @family blsR-requests
 #'
 #' @export
 #'
@@ -41,13 +41,14 @@ bls_request <- function(query, api_key = NA, user_agent = 'http://github.com/gro
 
   if('payload' %in% names(query)){
     if('series' %in% names(query$payload)){
-      if(is.na(registrationkey))
+      if(is.na(api_key))
         warning('api_key is required for multiple series requests.')
       query$payload[['registrationkey']] = api_key
     }
   }
 
   response <- httr::POST(url=query$url, ua, body=query$payload, encode="json")
+
   return(.process_response(response))
 }
 
@@ -66,6 +67,6 @@ bls_request <- function(query, api_key = NA, user_agent = 'http://github.com/gro
   if(json_response$status != 'REQUEST_SUCCEEDED') {
     stop(paste(json_response$message, '; '), call. = FALSE)
   }
-  reuturn(json_response$Results)
+  return(json_response$Results)
 }
 

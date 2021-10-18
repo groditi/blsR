@@ -9,7 +9,7 @@
 #'
 #' @return a tibble of observations
 #'
-#' @family <blsR-requests>
+#' @family blsR-requests
 #'
 #' @export
 #'
@@ -31,7 +31,7 @@ get_series_table <- function(series_id, start_year=NA, end_year=NA, ...){
 #'
 #' @return a list of tables
 #'
-#' @family <blsR-requests>
+#' @family blsR-requests
 #'
 #' @export
 #'
@@ -57,7 +57,7 @@ get_series_tables <- function(series_ids, api_key, start_year=NA, end_year=NA, .
 #'
 #' @return a tibble of multiple merged time series
 #'
-#' @family <blsR-requests>
+#' @family blsR-requests
 #'
 #' @export
 #'

@@ -7,7 +7,7 @@
 #'
 #' @return a single series result, in list form
 #'
-#' @family <blsR-requests>
+#' @family blsR-requests
 #'
 #' @seealso [`query_series`]
 #'
@@ -15,8 +15,8 @@
 #'
 #' @examples
 #' series <- get_series('LNS14000001')
-get_series <- function(series_id, start_date=NA, end_date=NA, ...){
-  results <- bls_request(query_n_series(bls_series_id, start_date, end_date), ...)
+get_series <- function(series_id, start_year=NA, end_year=NA, ...){
+  results <- bls_request(query_series(series_id, start_year, end_year), ...)
   return(results$series[[1]])
 }
 
@@ -31,7 +31,7 @@ get_series <- function(series_id, start_date=NA, end_date=NA, ...){
 #'
 #' @return a list of series results (a list of lists)
 #'
-#' @family <blsR-requests>
+#' @family blsR-requests
 #'
 #' @seealso [`query_n_series`]
 #'
@@ -62,19 +62,19 @@ get_n_series <- function(series_ids, api_key, ...){
 
 #' Create and execute a query to retrieve popular series
 #'
-#' @param survey optional survey abbreviation
+#' @param survey_id optional survey abbreviation
 #' @param ... additional parameters to pass to [bls_request]
 #'
 #' @return a character vector of series IDs
 #'
-#' @family <blsR-requests>
+#' @family blsR-requests
 #'
 #' @seealso [`query_popular_series`]
 #'
 #' @export
 #'
-get_popular_series <- function(survey=NA, ...){
-  results <- bls_request(query_popular_series(survey=survey), ...)
+get_popular_series <- function(survey_id=NA, ...){
+  results <- bls_request(query_popular_series(survey_id = survey_id), ...)
   return(sapply(results$series, function(x) x$SeriesID))
 }
 
@@ -84,7 +84,7 @@ get_popular_series <- function(survey=NA, ...){
 #'
 #' @return a table with a survey_abbreviation and survey_name columns
 #'
-#' @family <blsR-requests>
+#' @family blsR-requests
 #'
 #' @seealso [`query_all_surveys`]
 #'
@@ -101,7 +101,7 @@ get_all_surveys <- function(...){
 #'
 #' @return a list of survey information
 #'
-#' @family <blsR-requests>
+#' @family blsR-requests
 #'
 #' @seealso [`query_survey_info`]
 #'
@@ -119,7 +119,7 @@ get_survey_info <- function(...){
 #'
 #' @return a datum in the form of a list
 #'
-#' @family <blsR-requests>
+#' @family blsR-requests
 #'
 #' @seealso [`query_latest_observation`]
 #'

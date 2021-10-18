@@ -11,7 +11,7 @@
 #'
 #' @return tibble
 #'
-#' @family <blsR-utils>
+#' @family blsR-utils
 #' @export
 #'
 merge_tidy_tables <- function(tidy_tables){
@@ -39,7 +39,7 @@ merge_tidy_tables <- function(tidy_tables){
 #'
 #' @return tibble
 #'
-#' @family <blsR-utils>
+#' @family blsR-utils
 #' @export
 #'
 merge_tables <- function(tables, join_by = c('period')){
@@ -47,7 +47,7 @@ merge_tables <- function(tables, join_by = c('period')){
     stop('merge_tables requires a named list as input "tables".')
 
   purrr::reduce(
-    purrr::imap(tidy_tables, ~dplyr::select(.x, join_by, !!rlang::as_name(.y) := 'value')),
+    purrr::imap(tables, ~dplyr::select(.x, join_by, !!rlang::as_name(.y) := 'value')),
     dplyr::left_join,
     by = join_by
   )
@@ -66,7 +66,7 @@ merge_tables <- function(tables, join_by = c('period')){
 #'
 #' @return a tibble containing the period and the value
 #'
-#' @family <blsR-utils>
+#' @family blsR-utils
 #' @export
 #'
 
@@ -78,7 +78,7 @@ tidy_periods <- function(observations){
     return(
       dplyr::select(
         dplyr::mutate(observations, month = as.numeric(substr(period, 2, 3))),
-        -period, -PeriodName
+        -period, -periodName
       )
     )
   }
@@ -86,7 +86,7 @@ tidy_periods <- function(observations){
     return(
       dplyr::select(
         dplyr::mutate(observations, quarter = as.numeric(substr(period, 2, 3))),
-        -period, -PeriodName
+        -period, -periodName
       )
     )
   }
@@ -102,7 +102,7 @@ tidy_periods <- function(observations){
 #'
 #' @return tibble flattening `data` into rows for entries and columns for fields
 #'
-#' @family <blsR-utils>
+#' @family blsR-utils
 #' @export
 #'
 
@@ -120,7 +120,7 @@ data_as_table <- function(data){
 #'
 #' @return tibble flattening `data` into rows for entries and columns for fields
 #'
-#' @family <blsR-utils>
+#' @family blsR-utils
 #' @export
 #'
 
