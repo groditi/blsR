@@ -29,9 +29,9 @@
 #' @param start_year numeric 4-digit year
 #' @param end_year numeric 4-digit year
 #'
-#' @return list of query parameters for retriever function
+#' @return list of query parameters
 #'
-#'
+#' @family <blsR-queries>
 #'
 #' @export
 #'
@@ -61,7 +61,10 @@ query_series <- function(series_id, start_year=NA, end_year=NA){
 #' @param annualaverage boolean
 #' @param aspects boolean
 #'
-#' @return list of query parameters for retriever function
+#' @return list of query parameters
+#'
+#' @family <blsR-queries>
+#'
 #' @export
 #'
 #' @examples
@@ -88,8 +91,10 @@ query_n_series <- function(
 #'
 #' @param survey_id string optional
 #'
-#' @return list of query parameters for retriever function.
-#' retriever returns a tibble of popular series IDs
+#' @return list of query parameters
+#'
+#' @family <blsR-queries>
+#'
 #' @export
 #'
 #' @examples
@@ -111,8 +116,10 @@ query_popular_series <- function(survey_id = NA){
 
 #' Create a query to retrieve all surveys
 #'
-#' @return list of query parameters for retriever function.
-#' retriever returns a tibble of survey abbreviations and survey names
+#' @return list of query parameters
+#'
+#' @family <blsR-queries>
+#'
 #' @export
 
 query_all_surveys <- function(){
@@ -129,8 +136,10 @@ query_all_surveys <- function(){
 #'
 #' @param survey_id
 #'
-#' @return list of query parameters for retriever function.
-#' retriever returns a list of descriptive fields about a survey
+#' @return list of query parameters
+#'
+#' @family <blsR-queries>
+#'
 #' @export
 #'
 query_survey_info <- function(survey_id){
@@ -149,8 +158,10 @@ query_survey_info <- function(survey_id){
 #'
 #' @param series_id
 #'
-#' @return list of query parameters for retriever function.
-#' retriever returns a list of series with one observation
+#' @return list of query parameters
+#'
+#' @family <blsR-queries>
+#'
 #' @export
 #'
 
