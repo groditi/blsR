@@ -68,6 +68,11 @@ query_series <- function(series_id, start_year=NA, end_year=NA){
 #' @export
 #'
 #' @examples
+#' query_n_series(c('LNS14000001', 'LNS14000002'))
+#' query_n_series(c('LNS14000001', 'LNS14000002'), start_year = 2005, end_year=2010)
+#' query_n_series(c('LNS14000001', 'LNS14000002'), 2005, 2010)
+#' query_n_series(c('LNS14000001', 'LNS14000002'), catalog=TRUE)
+#'
 query_n_series <- function(
   series, start_year=NA, end_year=NA, catalog = FALSE, calculations = FALSE,
   annualaverage = FALSE, aspects = FALSE){
@@ -141,6 +146,9 @@ query_all_surveys <- function(){
 #' @family blsR-queries
 #'
 #' @export
+#'
+#' @examples
+#' query_survey_info('LN')
 #'
 query_survey_info <- function(survey_id){
   #TODO: throw an error if survey_id is missing
