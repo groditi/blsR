@@ -15,11 +15,13 @@
 #' @param user_agent string, optional
 #'
 #' @return a list of information returned by the API request
+#'
+#' @family <blsR-requests>
+#'
 #' @export
 #'
 #' @examples
 #' library(blsR)
-#' # the following code:
 #' uer_query <- query_series('LNS14000000') #monthly unemployment rate series
 #' uer_results <- bls_request(uer_query) #API response
 
