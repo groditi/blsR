@@ -10,6 +10,8 @@
 #' The list names will be used as column names in the output.
 #'
 #' @return tibble
+#'
+#' @family <blsR-utils>
 #' @export
 #'
 merge_tidy_tables <- function(tidy_tables){
@@ -36,6 +38,8 @@ merge_tidy_tables <- function(tidy_tables){
 #' @param join_by an optional character vector of columns to use to join tables.
 #'
 #' @return tibble
+#'
+#' @family <blsR-utils>
 #' @export
 #'
 merge_tables <- function(tables, join_by = c('period')){
@@ -61,6 +65,8 @@ merge_tables <- function(tables, join_by = c('period')){
 #' @param observations a tibble or data.frame of the `data` slot in a series
 #'
 #' @return a tibble containing the period and the value
+#'
+#' @family <blsR-utils>
 #' @export
 #'
 
@@ -95,6 +101,8 @@ tidy_periods <- function(observations){
 #' @details currently `data_as_table` is just an alias for [dplyr::bind_rows()]
 #'
 #' @return tibble flattening `data` into rows for entries and columns for fields
+#'
+#' @family <blsR-utils>
 #' @export
 #'
 
@@ -111,6 +119,8 @@ data_as_table <- function(data){
 #' `quarter` where appropriate.
 #'
 #' @return tibble flattening `data` into rows for entries and columns for fields
+#'
+#' @family <blsR-utils>
 #' @export
 #'
 
