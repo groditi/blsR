@@ -71,34 +71,40 @@ merge_tables <- function(tables, join_by = c('year', 'period')){
 #'  column `month` and quarterly data will have a new column `quarter`. Rows will
 #'  be sorted from oldest to newest.
 #'
-#' @param observations a tibble or data.frame of the `data` slot in a series
+#' @param table a tibble of the `data` slot in a series
 #'
 #' @return a sorted tibble containing the period and the value
 #'
 #' @family blsR-utils
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' series <- get_series('LNS14000001')
+#' table <- data_as_table(series$data)
+#' tidy_table <- tidy_periods(table)
+#' }
 
-tidy_periods <- function(observations){
-  if( substr(observations$period[1], 1, 1) == 'A' ){
-    return(dplyr::arrange(dplyr::select(observations, year, value), year))
+tidy_periods <- function(table){
+  if( substr(table$period[1], 1, 1) == 'A' ){
+    return(dplyr::arrange(dplyr::select(table, year, value), year))
   }
-  if( substr(observations$period[1], 1, 1) == 'M' ){
+  if( substr(table$period[1], 1, 1) == 'M' ){
     return(
       dplyr::arrange(
         dplyr::select(
-          dplyr::mutate(observations, month = as.numeric(substr(period, 2, 3))),
+          dplyr::mutate(table, month = as.numeric(substr(period, 2, 3))),
           -period, -periodName
         ),
         year, month
       )
     )
   }
-  if( substr(observations$period[1], 1, 1) == 'Q' ){
+  if( substr(table$period[1], 1, 1) == 'Q' ){
     return(
       dplyr::arrange(
         dplyr::select(
-          dplyr::mutate(observations, quarter = as.numeric(substr(period, 2, 3))),
+          dplyr::mutate(table, quarter = as.numeric(substr(period, 2, 3))),
           -period, -periodName
         ),
         year, quarters
