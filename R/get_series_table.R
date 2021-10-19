@@ -79,6 +79,15 @@ get_series_tables <- function(series_ids, api_key, start_year=NA, end_year=NA, .
 #'
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' get_n_series_table(
+#'   list(uer.men ='LNS14000001', uer.women = 'LNS14000002'),
+#'   'your-api-key-here',
+#'   start_year = 2005, end_year=2006
+#' )
+#' }
+#'
 get_n_series_table <- function(series_ids, api_key, start_year=NA, end_year=NA, tidy=FALSE, ...){
   tables <- get_series_tables(series_ids, api_key, start_year, end_year, ...)
   if(tidy){
