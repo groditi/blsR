@@ -21,9 +21,11 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' library(blsR)
 #' uer_query <- query_series('LNS14000000') #monthly unemployment rate series
 #' uer_results <- bls_request(uer_query) #API response
+#' }
 
 
 bls_request <- function(query, api_key = NA, user_agent = 'http://github.com/groditi/blsR' ){
@@ -44,7 +46,7 @@ bls_request <- function(query, api_key = NA, user_agent = 'http://github.com/gro
       if('seriesid' %in% names(query$payload)){
         if(is.na(api_key))
           warning('api_key is required for multiple series requests.')
-        query$payload[['registrationkey']] = api_key
+        query$payload[['registrationkey']] <- api_key
       }
     }
 

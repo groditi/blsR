@@ -14,7 +14,9 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' get_series_table('LNS14000001',2005,2006)
+#' }
 #'
 
 get_series_table <- function(series_id, start_year=NA, end_year=NA, ...){
@@ -37,6 +39,8 @@ get_series_table <- function(series_id, start_year=NA, end_year=NA, ...){
 #' @family blsR-requests
 #'
 #' @export
+#'
+#' @examples
 #' \dontrun{
 #' get_series_tables(
 #'   list(uer.men ='LNS14000001', uer.women = 'LNS14000002')),

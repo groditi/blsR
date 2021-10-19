@@ -14,7 +14,9 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' series <- get_series('LNS14000001')
+#' }
 get_series <- function(series_id, start_year=NA, end_year=NA, ...){
   results <- bls_request(query_series(series_id, start_year, end_year), ...)
   return(results$series[[1]])
