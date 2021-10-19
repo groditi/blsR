@@ -54,7 +54,7 @@ get_n_series <- function(series_ids, api_key, ...){
     series_aliases <- series_ids
   }
 
-  results <- bls_request(query_n_series(bls_series_ids, ...), api_key)
+  results <- bls_request(query_n_series(bls_series_ids, ...), api_key=api_key)
   names(results$series) <- series_aliases
   return(results$series)
 }
@@ -75,7 +75,7 @@ get_n_series <- function(series_ids, api_key, ...){
 #'
 get_popular_series <- function(survey_id=NA, ...){
   results <- bls_request(query_popular_series(survey_id = survey_id), ...)
-  return(sapply(results$series, function(x) x$SeriesID))
+  return(sapply(results$series, function(x) x$seriesID))
 }
 
 #' Create and execute a query to retrieve all surveys
