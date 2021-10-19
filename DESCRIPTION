@@ -1,5 +1,5 @@
 Package: blsR
-Title: Make Requests From The BLS API 
+Title: Make Requests from the BLS API 
 Version: 0.1.0
 Authors@R: 
     person(given = "Guillermo",
