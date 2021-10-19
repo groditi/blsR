@@ -42,6 +42,14 @@ merge_tidy_tables <- function(tidy_tables){
 #' @family blsR-utils
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' series_ids <- list(uer.men ='LNS14000001', uer.women = 'LNS14000002')
+#' uer_series <- get_n_series(series_ids, 'your-api-key-here' )
+#' uer_tables <- lapply(uer_series, function(x) data_to_table(x$data))
+#' big_table <- merge_tables(uer_tables)
+#' }
+#'
 merge_tables <- function(tables, join_by = c('year', 'period')){
   if( !is.list(tables) || !is.character(names(tables)) )
     stop('merge_tables requires a named list as input "tables".')
@@ -112,6 +120,11 @@ tidy_periods <- function(observations){
 #' @family blsR-utils
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' series <- get_series('LNS14000001')
+#' table <- data_as_table(series$data)
+#' }
 
 data_as_table <- function(data){
   dplyr::bind_rows(data)
@@ -130,6 +143,11 @@ data_as_table <- function(data){
 #' @family blsR-utils
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' series <- get_series('LNS14000001')
+#' table <- data_as_tidy_table(series$data)
+#' }
 
 data_as_tidy_table <- function(data){
   tidy_periods( dplyr::bind_rows(data) )
