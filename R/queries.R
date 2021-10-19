@@ -7,9 +7,9 @@
   annualaverage = FALSE, aspects = FALSE){
   # tell the API what we want
   if(is.na(start_year) != is.na(end_year))
-    stop("start_year and end_year must both be specified or both be NA")
-
-  #TODO: throw an error if start year is defined and larger than end year
+    stop('start_year and end_year must both be specified or both be NA')
+  if(!is.na(start_year) && start_year > end_year)
+    stop('start year can not be greater than end year')
 
   payload = list()
   if(!is.na(series) && length(series) >= 1) payload[['seriesid']] = c(series)
