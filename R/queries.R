@@ -37,8 +37,10 @@
 #' @export
 #'
 #' @examples
+#'
 #' unemployment_rate_query <- query_series('LNS14000000')
 #' unemployment_rate_query <- query_series('LNS14000000', 2005, 2010)
+#'
 query_series <- function(series_id, start_year=NA, end_year=NA){
   #query a singular series (easy GET from JSON URI)
   api_url <- .api_uri_root()
@@ -69,10 +71,12 @@ query_series <- function(series_id, start_year=NA, end_year=NA){
 #' @export
 #'
 #' @examples
-#' query_n_series(c('LNS14000001', 'LNS14000002'))
-#' query_n_series(c('LNS14000001', 'LNS14000002'), start_year = 2005, end_year=2010)
-#' query_n_series(c('LNS14000001', 'LNS14000002'), 2005, 2010)
-#' query_n_series(c('LNS14000001', 'LNS14000002'), catalog=TRUE)
+#'
+#' a <- query_n_series(c('LNS14000001', 'LNS14000002'))
+#' b <- query_n_series(c('LNS14000001', 'LNS14000002'), start_year = 2005, end_year=2010)
+#' c <- query_n_series(c('LNS14000001', 'LNS14000002'), 2005, 2010)
+#' d <- query_n_series(c('LNS14000001', 'LNS14000002'), catalog=TRUE)
+#'
 #'
 query_n_series <- function(
   series, start_year=NA, end_year=NA, catalog = FALSE, calculations = FALSE,
