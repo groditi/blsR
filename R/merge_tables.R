@@ -78,6 +78,8 @@ merge_tables <- function(tables, join_by = c('year', 'period')){
 #' @family blsR-utils
 #' @export
 #'
+#' @importFrom rlang .data
+#'
 #' @examples
 #' \dontrun{
 #' series <- get_series('LNS14000001')
@@ -87,16 +89,16 @@ merge_tables <- function(tables, join_by = c('year', 'period')){
 
 tidy_periods <- function(table){
   if( substr(table$period[1], 1, 1) == 'A' ){
-    return(dplyr::arrange(dplyr::select(table, year, value), year))
+    return(dplyr::arrange(dplyr::select(table, .data$year, .data$value), .data$year))
   }
   if( substr(table$period[1], 1, 1) == 'M' ){
     return(
       dplyr::arrange(
         dplyr::select(
-          dplyr::mutate(table, month = as.numeric(substr(period, 2, 3))),
-          -period, -periodName
+          dplyr::mutate(table, month = as.numeric(substr(.data$period, 2, 3))),
+          -'period', -'periodName'
         ),
-        year, month
+        .data$year, .data$month
       )
     )
   }
@@ -104,10 +106,10 @@ tidy_periods <- function(table){
     return(
       dplyr::arrange(
         dplyr::select(
-          dplyr::mutate(table, quarter = as.numeric(substr(period, 2, 3))),
-          -period, -periodName
+          dplyr::mutate(table, quarter = as.numeric(substr(.data$period, 2, 3))),
+          -'period', -'periodName'
         ),
-        year, quarters
+        .data$year, .data$quarter
       )
     )
   }
