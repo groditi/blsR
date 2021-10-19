@@ -42,7 +42,7 @@ merge_tidy_tables <- function(tidy_tables){
 #' @family blsR-utils
 #' @export
 #'
-merge_tables <- function(tables, join_by = c('period')){
+merge_tables <- function(tables, join_by = c('year', 'period')){
   if( !is.list(tables) || !is.character(names(tables)) )
     stop('merge_tables requires a named list as input "tables".')
 
