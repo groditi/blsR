@@ -10,15 +10,18 @@ Authors@R:
 Description: Implements v2 of the BLS API for requests of survey information and
   time series data.
 License: MIT + file LICENSE
-URL:https://github.com/groditi/blsR, https://www.bls.gov/developers/api_signature_v2.htm
-BugReports:https://github.com/groditi/blsR/issues
+URL: https://github.com/groditi/blsR, https://www.bls.gov/developers/api_signature_v2.htm
+BugReports: https://github.com/groditi/blsR/issues
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Imports: 
     dplyr,
     httr,
     jsonlite,
     purrr,
     rlang
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
