@@ -27,7 +27,8 @@ devtools::install_github("groditi/blsR")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to retrieve one series as a
+tibble or retrieve two series as a joined tibble.
 
 ``` r
 library(blsR)
