@@ -107,9 +107,9 @@ get_all_surveys <- function(...){
 #'
 #' @export
 #'
-get_survey_info <- function(...){
-  results <- bls_request(query_survey_info(), ...)
-  return(dplyr::bind_rows(results$survey[[1]]))
+get_survey_info <- function(survey_id, ...){
+  results <- bls_request(query_survey_info(survey_id), ...)
+  return(results$survey[[1]])
 }
 
 #' Create and execute a query to retrieve the latest observation for a series
