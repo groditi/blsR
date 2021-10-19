@@ -28,27 +28,27 @@
 
 bls_request <- function(query, api_key = NA, user_agent = 'http://github.com/groditi/blsR' ){
   ua <-  httr::user_agent(user_agent)
-
+  url <- httr::parse_url(query$url)
   #the query object should contain all it needs to make the request except
   #the BLS API key. simple requests that don't need it should be run even if
   #its missing but for complex ones with multiple series requested it should
   #inject the  key into the payload
+
   if(query$is_complex == FALSE){
-    url <- httr::parse_url(query$url)
     if(!is.na(api_key))
       url <- httr::modify_url(url, query = c(url$query, list(registrationkey = api_key)))
 
-    response <- httr::GET(query$url, ua)
+    response <- httr::GET(url, ua)
   } else{
     if('payload' %in% names(query)){
-      if('series' %in% names(query$payload)){
+      if('seriesid' %in% names(query$payload)){
         if(is.na(api_key))
           warning('api_key is required for multiple series requests.')
         query$payload[['registrationkey']] = api_key
       }
     }
 
-    response <- httr::POST(url=query$url, ua, body=query$payload, encode="json")
+    response <- httr::POST(url=url, ua, body=query$payload, encode="json")
   }
 
   return(
