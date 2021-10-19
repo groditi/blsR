@@ -3,7 +3,7 @@
 }
 
 .build_payload <- function(
-  series=NA, start_year=NA, end_year=NA, catalog = FALSE, calculations = FALSE,
+  series=c(), start_year=NA, end_year=NA, catalog = FALSE, calculations = FALSE,
   annualaverage = FALSE, aspects = FALSE){
   # tell the API what we want
   if(is.na(start_year) != is.na(end_year))
@@ -11,14 +11,15 @@
   if(!is.na(start_year) && start_year > end_year)
     stop('start year can not be greater than end year')
 
-  payload = list()
-  if(!is.na(series) && length(series) >= 1) payload[['seriesid']] = c(series)
-  if(!is.na(start_year)) payload[['startyear']] = start_year
-  if(!is.na(end_year)) payload[['endyear']] = end_year
-  if(isTRUE(catalog)) payload[['catalog']] = catalog
-  if(isTRUE(calculations)) payload[['calculations']] = calculations
-  if(isTRUE(annualaverage)) payload[['annualaverage']] = annualaverage
-  if(isTRUE(aspects)) payload[['aspects']] = aspects
+  payload <- list()
+  if(length(series) > 1) payload[['seriesid']] <- series
+  if(length(series) ==  1) payload[['seriesid']] <- c(series)
+  if(!is.na(start_year)) payload[['startyear']] <- start_year
+  if(!is.na(end_year)) payload[['endyear']] <- end_year
+  if(isTRUE(catalog)) payload[['catalog']] <- catalog
+  if(isTRUE(calculations)) payload[['calculations']] <- calculations
+  if(isTRUE(annualaverage)) payload[['annualaverage']] <- annualaverage
+  if(isTRUE(aspects)) payload[['aspects']] <- aspects
   #if(!is.na(registrationkey)) payload[['registrationkey']] = registrationkey
   return(payload)
 }
