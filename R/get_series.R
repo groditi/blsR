@@ -82,7 +82,6 @@ get_popular_series <- function(survey_id=NA, ...){
 
 #' Create and execute a query to retrieve all surveys
 #'
-#' @param survey_id survey abbreviation
 #' @param ... additional parameters to pass to [bls_request]
 #'
 #' @return a table with a survey_abbreviation and survey_name columns
@@ -100,6 +99,7 @@ get_all_surveys <- function(...){
 
 #' Create and execute a query to retrieve information about a survey
 #'
+#' @param survey_id survey abbreviation
 #' @param ... additional parameters to pass to [bls_request]
 #'
 #' @return a list of survey information
