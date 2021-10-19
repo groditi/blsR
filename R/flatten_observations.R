@@ -60,11 +60,12 @@ merge_tables <- function(tables, join_by = c('year', 'period')){
 #' @details
 #' `tidy_periods` will return a tibble where the period and periodName columns
 #'  have been deleted and replaced. Monthly periodicity data will have a new
-#'  column `month` and quarterly data will have a new column `quarter`.
+#'  column `month` and quarterly data will have a new column `quarter`. Rows will
+#'  be sorted from oldest to newest.
 #'
 #' @param observations a tibble or data.frame of the `data` slot in a series
 #'
-#' @return a tibble containing the period and the value
+#' @return a sorted tibble containing the period and the value
 #'
 #' @family blsR-utils
 #' @export
@@ -72,21 +73,27 @@ merge_tables <- function(tables, join_by = c('year', 'period')){
 
 tidy_periods <- function(observations){
   if( substr(observations$period[1], 1, 1) == 'A' ){
-    return(dplyr::select(observations, year, value))
+    return(dplyr::arrange(dplyr::select(observations, year, value), year))
   }
   if( substr(observations$period[1], 1, 1) == 'M' ){
     return(
-      dplyr::select(
-        dplyr::mutate(observations, month = as.numeric(substr(period, 2, 3))),
-        -period, -periodName
+      dplyr::arrange(
+        dplyr::select(
+          dplyr::mutate(observations, month = as.numeric(substr(period, 2, 3))),
+          -period, -periodName
+        ),
+        year, month
       )
     )
   }
   if( substr(observations$period[1], 1, 1) == 'Q' ){
     return(
-      dplyr::select(
-        dplyr::mutate(observations, quarter = as.numeric(substr(period, 2, 3))),
-        -period, -periodName
+      dplyr::arrange(
+        dplyr::select(
+          dplyr::mutate(observations, quarter = as.numeric(substr(period, 2, 3))),
+          -period, -periodName
+        ),
+        year, quarters
       )
     )
   }
