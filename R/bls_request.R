@@ -34,22 +34,29 @@ bls_request <- function(query, api_key = NA, user_agent = 'http://github.com/gro
   #its missing but for complex ones with multiple series requested it should
   #inject the  key into the payload
   if(query$is_complex == FALSE){
+    url <- httr::parse_url(query$url)
+    if(!is.na(api_key))
+      url <- httr::modify_url(url, query = c(url$query, list(registrationkey = api_key)))
+
     response <- httr::GET(query$url, ua)
-    return(.process_response(response))
-  }
-
-
-  if('payload' %in% names(query)){
-    if('series' %in% names(query$payload)){
-      if(is.na(api_key))
-        warning('api_key is required for multiple series requests.')
-      query$payload[['registrationkey']] = api_key
+  } else{
+    if('payload' %in% names(query)){
+      if('series' %in% names(query$payload)){
+        if(is.na(api_key))
+          warning('api_key is required for multiple series requests.')
+        query$payload[['registrationkey']] = api_key
+      }
     }
+
+    response <- httr::POST(url=query$url, ua, body=query$payload, encode="json")
   }
 
-  response <- httr::POST(url=query$url, ua, body=query$payload, encode="json")
-
-  return(.process_response(response))
+  return(
+    tryCatch(
+      .process_response(response),
+      error = function(e) stop(paste(c('Error processing', url, e), ': '))
+    )
+  )
 }
 
 .process_response <- function(response){
