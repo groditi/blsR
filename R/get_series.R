@@ -40,7 +40,7 @@ get_series <- function(series_id, start_year=NA, end_year=NA, ...){
 #' @examples
 #' \dontrun{
 #' series_ids <- list(uer.men ='LNS14000001', uer.women = 'LNS14000002')
-#' uer_series <- query_n_series(series_ids), 'your-api-key-here' )
+#' uer_series <- get_n_series(series_ids, 'your-api-key-here' )
 #' }
 get_n_series <- function(series_ids, api_key, ...){
   bls_series_ids <- vector(mode = "character", length = length(series_ids))
@@ -80,6 +80,7 @@ get_popular_series <- function(survey_id=NA, ...){
 
 #' Create and execute a query to retrieve all surveys
 #'
+#' @param survey_id survey abbreviation
 #' @param ... additional parameters to pass to [bls_request]
 #'
 #' @return a table with a survey_abbreviation and survey_name columns
