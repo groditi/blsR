@@ -13,6 +13,9 @@
 #'
 #' @export
 #'
+#' @examples
+#' get_series_table('LNS14000001',2005,2006)
+#'
 
 get_series_table <- function(series_id, start_year=NA, end_year=NA, ...){
   data_as_table(get_series(series_id, start_year, end_year, ...)$data)
@@ -34,11 +37,22 @@ get_series_table <- function(series_id, start_year=NA, end_year=NA, ...){
 #' @family blsR-requests
 #'
 #' @export
+#' \dontrun{
+#' get_series_tables(
+#'   list(uer.men ='LNS14000001', uer.women = 'LNS14000002')),
+#'   'your-api-key-here'
+#' )
+#' get_series_tables(
+#'   list(uer.men ='LNS14000001', uer.women = 'LNS14000002'),
+#'   'your-api-key-here',
+#'   2005,2006
+#' )
+#' }
 #'
 
 get_series_tables <- function(series_ids, api_key, start_year=NA, end_year=NA, ...){
   lapply(
-    get_n_series(series_ids, api_key, start_year=NA, end_year=NA, ...),
+    get_n_series(series_ids, api_key, start_year, end_year, ...),
     function(x) { data_as_table(x[['data']]) }
   )
 }
@@ -61,11 +75,11 @@ get_series_tables <- function(series_ids, api_key, start_year=NA, end_year=NA, .
 #'
 #' @export
 #'
-#' @examples
 get_n_series_table <- function(series_ids, api_key, start_year=NA, end_year=NA, tidy=FALSE, ...){
-  table <- merge_tables(
-    get_series_tables(series_ids, api_key, start_year=NA, end_year=NA, ...)
-  )
-  if(tidy) return(tidy_periods(table))
-  return(table)
+  tables <- get_series_tables(series_ids, api_key, start_year, end_year, ...)
+  if(tidy){
+    return(merge_tidy_tables(lapply(tables, tidy_periods)))
+  }
+
+  return(merge_tables(tables))
 }
