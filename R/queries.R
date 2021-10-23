@@ -8,8 +8,18 @@
   # tell the API what we want
   if(is.na(start_year) != is.na(end_year))
     stop('start_year and end_year must both be specified or both be NA')
-  if(!is.na(start_year) && start_year > end_year)
-    stop('start year can not be greater than end year')
+  if(!is.na(start_year) ){
+    if(start_year > end_year)
+      stop('start year can not be greater than end year')
+    if( (end_year - start_year) >= 20 ){
+      warning( paste(c(
+        'BLS restricts timeseries requests to a maximum of 20 years of data.',
+        'Timespan', start_year, 'to', end_year, 'exceeds 20 years.',
+        'Split request into two or more queries and join the results.'
+        )))
+    }
+  }
+
 
   payload <- list()
   if(length(series) > 1) payload[['seriesid']] <- series

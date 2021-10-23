@@ -6,10 +6,11 @@ test_that('payload tests',{
   expect_equal(typeof(query_n_series(c(1,2))), 'list')
   expect_error(query_n_series('test', 2005))
   expect_error(query_n_series('test', 2005, 2004))
+  expect_warning(query_n_series('test', 1984, 2004), 'exceeds 20 years')
   expect_mapequal(
-    query_n_series('test', 2004, 2006, TRUE, TRUE, TRUE, TRUE)$payload,
+    query_n_series('test', 1985, 2004, TRUE, TRUE, TRUE, TRUE)$payload,
     list(
-      seriesid='test', startyear=2004, endyear=2006, catalog=TRUE,
+      seriesid='test', startyear=1985, endyear=2004, catalog=TRUE,
       calculations=TRUE, annualaverage=TRUE, aspects=TRUE
       )
   )
