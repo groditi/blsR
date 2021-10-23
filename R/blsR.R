@@ -5,7 +5,20 @@
 #' The functions are divided into 4 categories: query generators, query requests,
 #' result processors, and the user-friendly simplified interface.
 #'
-#' @section Query generators:
+#' @section General Workflow:
+#'
+#' This package was designed with a three-step workflow in mind:
+#'  * Identify which data you would like to retrieve and create a query.
+#'  * Make an http request to execute a query ([`bls_request()`])
+#'  * Modify the response data to fit the user workflow
+#'
+#' You can customize this workflow by creating your own query objects which
+#' consist of a target URL and an optional payload as documented in the API Spec.
+#' You may also want to create a custom results processor to shape the data to
+#' suit individual needs and wrap those into a single call like
+#' [`get_series_table()`] does.
+#'
+#' @section Query Generators:
 #'
 #' The query generators return a list suitable for passing to [`bls_request()`].
 #' Most users should never need to access these functions directly but they are
