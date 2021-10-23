@@ -9,7 +9,24 @@
 The functions are divided into 4 categories: query generators, query requests,
 result processors, and the user-friendly simplified interface.
 }
-\section{Query generators}{
+\section{General Workflow}{
+
+
+This package was designed with a three-step workflow in mind:
+\itemize{
+\item Identify which data you would like to retrieve and create a query.
+\item Make an http request to execute a query (\code{\link[=bls_request]{bls_request()}})
+\item Modify the response data to fit the user workflow
+}
+
+You can customize this workflow by creating your own query objects which
+consist of a target URL and an optional payload as documented in the API Spec.
+You may also want to create a custom results processor to shape the data to
+suit individual needs and wrap those into a single call like
+\code{\link[=get_series_table]{get_series_table()}} does.
+}
+
+\section{Query Generators}{
 
 
 The query generators return a list suitable for passing to \code{\link[=bls_request]{bls_request()}}.
@@ -70,8 +87,9 @@ or modify the output of another result-processor function.
 
 
 These functions simplify the query generation, execution, and response
-processing into a single function call. For most common use cases these are
-likely to be the only functions needed.
+processing into a single function call, including extended request periods
+that have to be broken down into multiple API requests. For most common use
+cases these are likely to be the only functions needed.
 \itemize{
 \item \code{\link[=get_series_table]{get_series_table()}} - Request one series and return a data table
 \item \code{\link[=get_series_tables]{get_series_tables()}} - Request series and return list of data tables

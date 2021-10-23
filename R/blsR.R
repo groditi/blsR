@@ -56,8 +56,9 @@
 #' @section Simplified Interface:
 #'
 #' These functions simplify the query generation, execution, and response
-#' processing into a single function call. For most common use cases these are
-#' likely to be the only functions needed.
+#' processing into a single function call, including extended request periods
+#' that have to be broken down into multiple API requests. For most common use
+#' cases these are likely to be the only functions needed.
 #'
 #' * [`get_series_table()`] - Request one series and return a data table
 #' * [`get_series_tables()`] - Request series and return list of data tables
