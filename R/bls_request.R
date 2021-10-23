@@ -68,9 +68,7 @@ bls_request <- function(query, api_key = NA, user_agent = 'http://github.com/gro
     stop("http request did not return json", call. = FALSE)
   }
 
-  json_response <- jsonlite::fromJSON(
-    httr::content(response, 'text'), simplifyVector=FALSE
-  )
+  json_response <- httr::content(response, simplifyVector=FALSE)
 
   #die if request wasn't successful
   if(json_response$status != 'REQUEST_SUCCEEDED') {
