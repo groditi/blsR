@@ -94,9 +94,12 @@ tidy_periods <- function(table){
   if( substr(table$period[1], 1, 1) == 'M' ){
     return(
       dplyr::arrange(
-        dplyr::select(
-          dplyr::mutate(table, month = as.integer(substr(.data$period, 2, 3))),
-          -'period', -'periodName'
+        dplyr::relocate(
+          dplyr::select(
+            dplyr::mutate(table, month = as.integer(substr(.data$period, 2, 3))),
+            -'period', -'periodName'
+          ),
+          .data$month, .after='year'
         ),
         .data$year, .data$month
       )
@@ -105,9 +108,12 @@ tidy_periods <- function(table){
   if( substr(table$period[1], 1, 1) == 'Q' ){
     return(
       dplyr::arrange(
-        dplyr::select(
-          dplyr::mutate(table, quarter = as.integer(substr(.data$period, 2, 3))),
-          -'period', -'periodName'
+        dplyr::relocate(
+          dplyr::select(
+            dplyr::mutate(table, quarter = as.integer(substr(.data$period, 2, 3))),
+            -'period', -'periodName'
+          ),
+          .data$quarter, .after='year'
         ),
         .data$year, .data$quarter
       )
