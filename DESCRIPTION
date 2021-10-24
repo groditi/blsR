@@ -1,6 +1,6 @@
 Package: blsR
 Title: Make Requests from the Bureau of Labor Statistics API 
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: 
     person(given = "Guillermo",
            family = "Roditi Dominguez",
