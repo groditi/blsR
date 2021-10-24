@@ -1,5 +1,5 @@
 Package: blsR
-Title: Make Requests from the BLS API 
+Title: Make Requests from the Bureau of Labor Statistics API 
 Version: 0.2.0
 Authors@R: 
     person(given = "Guillermo",
@@ -7,15 +7,14 @@ Authors@R:
            role = c("aut", "cre"),
            email = "guillermo@newriverinvestments.com",
            comment = c(ORCID = "0000-0002-7127-8742"))
-Description: Implements v2 of the BLS API for requests of survey information and
-  time series data through 3-tiered API that allows users to interact with the 
-  raw API directly, create queries programatically, and re-shape the data 
-  structures returned to fit common workflows. 
+Description: Implements v2 of the B.L.S. API for requests of survey information
+  and time series data through 3-tiered API that allows users to interact with
+  the raw API directly, create queries through a functional interface, and
+  re-shape the data structures returned to fit common uses. 
 License: MIT + file LICENSE
-URL: https://github.com/groditi/blsR, https://www.bls.gov/developers/api_signature_v2.htm
+URL: https://github.com/groditi/blsR
 BugReports: https://github.com/groditi/blsR/issues
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Imports: 
