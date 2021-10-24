@@ -26,7 +26,7 @@ list items are named then the names will be used in the returned list}
 
 \item{tidy}{optional boolean. Return will use \code{\link[=tidy_periods]{tidy_periods()}} if true}
 
-\item{...}{additional parameters to pass to \code{\link{query_n_series}}}
+\item{...}{additional parameters to pass to \code{\link{get_series_tables}}}
 }
 \value{
 a tibble of multiple merged time series
