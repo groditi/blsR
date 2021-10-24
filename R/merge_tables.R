@@ -95,7 +95,7 @@ tidy_periods <- function(table){
     return(
       dplyr::arrange(
         dplyr::select(
-          dplyr::mutate(table, month = as.numeric(substr(.data$period, 2, 3))),
+          dplyr::mutate(table, month = as.integer(substr(.data$period, 2, 3))),
           -'period', -'periodName'
         ),
         .data$year, .data$month
@@ -106,7 +106,7 @@ tidy_periods <- function(table){
     return(
       dplyr::arrange(
         dplyr::select(
-          dplyr::mutate(table, quarter = as.numeric(substr(.data$period, 2, 3))),
+          dplyr::mutate(table, quarter = as.integer(substr(.data$period, 2, 3))),
           -'period', -'periodName'
         ),
         .data$year, .data$quarter
@@ -135,7 +135,7 @@ tidy_periods <- function(table){
 #' }
 
 data_as_table <- function(data){
-  dplyr::bind_rows(data)
+  dplyr::mutate(dplyr::bind_rows(data), year = as.integer(.data$year))
 }
 
 #' Convert a list of data entries as returned by BLS API to a table
