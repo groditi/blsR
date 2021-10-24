@@ -4,7 +4,7 @@
 #'
 #' @param series_id a BLS time-series ID
 #' @param api_key a mandatory API key, available from
-#'  <http://data.bls.gov/registrationEngine/>
+#'  <https://data.bls.gov/registrationEngine/>
 #' @param start_year optional numeric 4-digit year
 #' @param end_year optional numeric 4-digit year
 #' @param year_limit optional number of years to paginate request by. Defaults
@@ -51,7 +51,7 @@ get_series_table <- function(series_id, api_key, start_year=NA, end_year=NA, yea
 #' @param series_ids a list or character vector of BLS time-series IDs. If the
 #' list items are named then the names will be used in the returned list
 #' @param api_key a mandatory API key, available from
-#'  <http://data.bls.gov/registrationEngine/>
+#'  <https://data.bls.gov/registrationEngine/>
 #' @param start_year optional numeric 4-digit year
 #' @param end_year optional numeric 4-digit year
 #' @param year_limit optional number of years to paginate request by. Defaults
@@ -111,7 +111,7 @@ get_series_tables <- function(series_ids, api_key, start_year=NA, end_year=NA, y
 #' @param series_ids a named list of BLS time-series IDs. If the
 #' list items are named then the names will be used in the returned list
 #' @param api_key a mandatory API key, available from
-#'  <http://data.bls.gov/registrationEngine/>
+#'  <https://data.bls.gov/registrationEngine/>
 #' @param start_year optional numeric 4-digit year
 #' @param end_year optional numeric 4-digit year
 #' @param tidy optional boolean. Return will use [`tidy_periods()`] if true

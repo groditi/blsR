@@ -17,7 +17,7 @@ get_series_table(
 \item{series_id}{a BLS time-series ID}
 
 \item{api_key}{a mandatory API key, available from
-\url{http://data.bls.gov/registrationEngine/}}
+\url{https://data.bls.gov/registrationEngine/}}
 
 \item{start_year}{optional numeric 4-digit year}
 

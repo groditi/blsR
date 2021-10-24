@@ -28,7 +28,7 @@ get_series <- function(series_id, start_year=NA, end_year=NA, ...){
 #' @param series_ids a list or character vector of BLS time-series IDs. If the
 #' list items are named then the names will be used in the returned list
 #' @param api_key a required API key, available from
-#'  <http://data.bls.gov/registrationEngine/>
+#'  <https://data.bls.gov/registrationEngine/>
 #' @param ... additional parameters to pass to [query_n_series]
 #'
 #' @return a list of series results (a list of lists)
