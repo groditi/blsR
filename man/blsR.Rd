@@ -9,6 +9,21 @@
 The functions are divided into 4 categories: query generators, query requests,
 result processors, and the user-friendly simplified interface.
 }
+\section{API Key and Definition}{
+
+
+The API key is an optional parameter, but it is recommended you register for
+an API key and use it. Requests without a key are limited to 10 years of data
+per request, 25 series per query, and 25 queries per day. You can register at:
+\url{http://data.bls.gov/registrationEngine/}
+
+This implementation was based on the signatures available at:
+\url{https://www.bls.gov/developers/api_signature_v2.htm}
+
+The B.L.S. Frequently asked questions is available at:
+\url{http://www.bls.gov/developers/api_faqs.htm}
+}
+
 \section{General Workflow}{
 
 

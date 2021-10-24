@@ -12,7 +12,7 @@ get_n_series(series_ids, api_key, ...)
 list items are named then the names will be used in the returned list}
 
 \item{api_key}{a required API key, available from
-\url{https://data.bls.gov/registrationEngine/}}
+\url{http://data.bls.gov/registrationEngine/}}
 
 \item{...}{additional parameters to pass to \link{query_n_series}}
 }

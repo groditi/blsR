@@ -18,7 +18,7 @@ get_series_tables(
 list items are named then the names will be used in the returned list}
 
 \item{api_key}{a mandatory API key, available from
-\url{https://data.bls.gov/registrationEngine/}}
+\url{http://data.bls.gov/registrationEngine/}}
 
 \item{start_year}{optional numeric 4-digit year}
 

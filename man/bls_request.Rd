@@ -23,7 +23,7 @@ generated using one of the following query-generating functions:
 \code{\link[=query_series]{query_series()}}, \code{\link[=query_n_series]{query_n_series()}}, \code{\link[=query_popular_series]{query_popular_series()}},
 \code{\link[=query_all_surveys]{query_all_surveys()}}, \code{\link[=query_survey_info]{query_survey_info()}}, \code{\link[=query_latest_observation]{query_latest_observation()}}.
 The result is the "Results" block as defined in the API v2 signatures at
-\url{https://www.bls.gov/developers/api_signature_v2.htm}
+\url{http://www.bls.gov/developers/api_signature_v2.htm}
 }
 \examples{
 \dontrun{
