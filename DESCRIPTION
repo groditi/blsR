@@ -1,6 +1,6 @@
 Package: blsR
 Title: Make Requests from the BLS API 
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: 
     person(given = "Guillermo",
            family = "Roditi Dominguez",
@@ -8,7 +8,9 @@ Authors@R:
            email = "guillermo@newriverinvestments.com",
            comment = c(ORCID = "0000-0002-7127-8742"))
 Description: Implements v2 of the BLS API for requests of survey information and
-  time series data.
+  time series data through 3-tiered API that allows users to interact with the 
+  raw API directly, create queries programatically, and re-shape the data 
+  structures returned to fit common workflows. 
 License: MIT + file LICENSE
 URL: https://github.com/groditi/blsR, https://www.bls.gov/developers/api_signature_v2.htm
 BugReports: https://github.com/groditi/blsR/issues

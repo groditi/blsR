@@ -4,14 +4,28 @@
 \alias{get_series_table}
 \title{Retrieve a single time series from BLS API and return a tibble}
 \usage{
-get_series_table(series_id, start_year = NA, end_year = NA, ...)
+get_series_table(
+  series_id,
+  api_key,
+  start_year = NA,
+  end_year = NA,
+  year_limit = 20,
+  ...
+)
 }
 \arguments{
 \item{series_id}{a BLS time-series ID}
 
+\item{api_key}{a mandatory API key, available from
+\url{https://data.bls.gov/registrationEngine/}}
+
 \item{start_year}{optional numeric 4-digit year}
 
 \item{end_year}{optional numeric 4-digit year}
+
+\item{year_limit}{optional number of years to paginate request by. Defaults
+to 20, the API request cap when using API key. Requests made without an API
+key are capped to 10 years.}
 
 \item{...}{additional parameters to pass to \code{\link{bls_request}}}
 }
