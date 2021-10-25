@@ -10,8 +10,8 @@ Authors@R:
 Description: Implements v2 of the B.L.S. API for requests of survey information
   and time series data through 3-tiered API that allows users to interact with
   the raw API directly, create queries through a functional interface, and
-  re-shape the data structures returned to fit common uses. API definition at:
-  <https://www.bls.gov/developers/api_signature_v2.htm>
+  re-shape the data structures returned to fit common uses. The API definition 
+  is located at: <https://www.bls.gov/developers/api_signature_v2.htm>.
 License: MIT + file LICENSE
 URL: https://github.com/groditi/blsR
 BugReports: https://github.com/groditi/blsR/issues
