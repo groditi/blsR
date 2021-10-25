@@ -9,6 +9,7 @@ This is a resubmission. In this version I have:
   * rhub had a NOTE about LazyData that has been fixed
   * there is a NOTE about a SSL/TLS alert for the bls.gov site. I tried changing
   URL scheme from 'https' to 'http' in the docs but it does not help. 
+  * add API URL to description section in DESCRIPTION as requested by Gregor Seyer
 
 ## blsR 0.2.0 
 
