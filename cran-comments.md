@@ -1,3 +1,8 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+  * add API URL to description section in DESCRIPTION as requested by Gregor Seyer
+
 ## blsR 0.2.1
 
   * rhub did not like the words "workflows", "programatically", and "BLS".
