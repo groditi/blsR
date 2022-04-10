@@ -199,7 +199,7 @@ data_as_tidy_table <- function(data, parse_values=TRUE){
 #' [`zoo::yearqtr`] for quarterly or annual series.
 #'
 #' @details A utility function to easily convert retrieved BLS series into
-#' [`zoo::zoo`] or [`xts::xts`] objects.
+#' `zoo` or `xts` objects.
 #'
 #' @return a `zoo`object
 #'

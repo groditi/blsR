@@ -22,7 +22,7 @@ Convert a single series or n series tables into a zoo object
 }
 \details{
 A utility function to easily convert retrieved BLS series into
-\code{\link[zoo:zoo]{zoo::zoo}} or \code{\link[xts:xts]{xts::xts}} objects.
+\code{zoo} or \code{xts} objects.
 }
 \examples{
 \dontrun{
