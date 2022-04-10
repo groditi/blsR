@@ -9,7 +9,7 @@ get_latest_observation(survey_id, ...)
 \arguments{
 \item{survey_id}{BLS series ID}
 
-\item{...}{additional parameters to pass to \link{bls_request}}
+\item{...}{additional parameters to pass to \code{\link[=bls_request]{bls_request()}}}
 }
 \value{
 a datum in the form of a list

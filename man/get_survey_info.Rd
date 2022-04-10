@@ -9,7 +9,7 @@ get_survey_info(survey_id, ...)
 \arguments{
 \item{survey_id}{survey abbreviation}
 
-\item{...}{additional parameters to pass to \link{bls_request}}
+\item{...}{additional parameters to pass to \code{\link[=bls_request]{bls_request()}}}
 }
 \value{
 a list of survey information

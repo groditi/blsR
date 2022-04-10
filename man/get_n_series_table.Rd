@@ -10,6 +10,7 @@ get_n_series_table(
   start_year = NA,
   end_year = NA,
   tidy = FALSE,
+  parse_values = TRUE,
   ...
 )
 }
@@ -25,6 +26,10 @@ list items are named then the names will be used in the returned list}
 \item{end_year}{optional numeric 4-digit year}
 
 \item{tidy}{optional boolean. Return will use \code{\link[=tidy_periods]{tidy_periods()}} if true}
+
+\item{parse_values}{optional boolean. If set to \code{true} (default) it will
+attempt to parse the values of requested data series and cast numeric strings
+as numeric values. If set to \code{false} it will retain them as strings.}
 
 \item{...}{additional parameters to pass to \code{\link{get_series_tables}}}
 }

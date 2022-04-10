@@ -34,6 +34,7 @@ Other blsR-utils:
 \code{\link{data_as_table}()},
 \code{\link{data_as_tidy_table}()},
 \code{\link{merge_tidy_tables}()},
-\code{\link{tidy_periods}()}
+\code{\link{tidy_periods}()},
+\code{\link{tidy_table_as_zoo}()}
 }
 \concept{blsR-utils}

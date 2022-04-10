@@ -7,7 +7,7 @@
 get_all_surveys(...)
 }
 \arguments{
-\item{...}{additional parameters to pass to \link{bls_request}}
+\item{...}{additional parameters to pass to \code{\link[=bls_request]{bls_request()}}}
 }
 \value{
 a table with a survey_abbreviation and survey_name columns

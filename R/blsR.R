@@ -78,6 +78,9 @@
 #' * [`tidy_periods()`] - Transform periods to a more useful format
 #' * [`data_as_tidy_table()`] - Flatten the data list and transform period data
 #' * [`merge_tidy_tables()`] - Merge multiple tables with tidy period data
+#' * [`tidy_table_as_zoo()`] - Turn a table produced by `data_as_tidy_table`,
+#' `merge_tidy_tables`, or `tidy_periods` as a `zoo` object, which can be
+#' further turned into an `xts` object
 #'
 #' @section Simplified Interface:
 #'

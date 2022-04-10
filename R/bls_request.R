@@ -13,6 +13,9 @@
 #' @param api_key string, only necessary for retrieving multiple series in one
 #' request, requesting calculations, or custom time frames and catalog data
 #' @param user_agent string, optional
+#' @param process_response function, optional. processes the [`httr::response`]
+#'  object. The default function will return the JSON payload parsed into a list
+#' @param ... further arguments will be passed to `process_response` when called
 #'
 #' @return a list of information returned by the API request
 #'
@@ -28,7 +31,13 @@
 #' }
 
 
-bls_request <- function(query, api_key = NA, user_agent = 'http://github.com/groditi/blsR' ){
+bls_request <- function(
+  query,
+  api_key = NA,
+  user_agent = 'http://github.com/groditi/blsR',
+  process_response = .process_response,
+  ...
+){
   ua <-  httr::user_agent(user_agent)
   url <- httr::parse_url(query$url)
   #the query object should contain all it needs to make the request except
@@ -55,20 +64,20 @@ bls_request <- function(query, api_key = NA, user_agent = 'http://github.com/gro
 
   return(
     tryCatch(
-      .process_response(response),
+      process_response(response, ...),
       error = function(e) stop(paste(c('Error processing', url, e), ': '))
     )
   )
 }
 
-.process_response <- function(response){
+.process_response <- function(response, ...){
 
   #die if the format of the response content isnt json
   if(httr::http_type(response) != "application/json"){
     stop("http request did not return json", call. = FALSE)
   }
 
-  json_response <- httr::content(response, simplifyVector=FALSE)
+  json_response <- httr::content(response, simplifyVector=FALSE, ...)
 
   #die if request wasn't successful
   if(json_response$status != 'REQUEST_SUCCEEDED') {

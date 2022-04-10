@@ -95,6 +95,9 @@ or modify the output of another result-processor function.
 \item \code{\link[=tidy_periods]{tidy_periods()}} - Transform periods to a more useful format
 \item \code{\link[=data_as_tidy_table]{data_as_tidy_table()}} - Flatten the data list and transform period data
 \item \code{\link[=merge_tidy_tables]{merge_tidy_tables()}} - Merge multiple tables with tidy period data
+\item \code{\link[=tidy_table_as_zoo]{tidy_table_as_zoo()}} - Turn a table produced by \code{data_as_tidy_table},
+\code{merge_tidy_tables}, or \code{tidy_periods} as a \code{zoo} object, which can be
+further turned into an \code{xts} object
 }
 }
 

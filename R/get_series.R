@@ -3,9 +3,17 @@
 #' @param series_id BLS series ID
 #' @param start_year numeric 4-digit year
 #' @param end_year numeric 4-digit year
-#' @param ... additional parameters to pass to [bls_request]
+#' @param ... additional parameters to pass to [`bls_request()`]
 #'
-#' @return a single series result, in list form
+#' @return a single series result, in list form. The resulting list will have
+#' the following items:
+#' * `seriesID`: a character vector of length 1 containing the `series_id`
+#' * `data`: a list of lists containing the payload data. Each item of the list
+#' represents an observation. Each observation is a list with the following
+#' named items `year`, `period`, `periodName`, `value`, `footnotes`.
+#' Footnotes are a list. Additionally, the most recent observation will have
+#' an item named `latest` which will be marked as 'true'.
+#'
 #'
 #' @family blsR-requests
 #'
@@ -29,9 +37,10 @@ get_series <- function(series_id, start_year=NA, end_year=NA, ...){
 #' list items are named then the names will be used in the returned list
 #' @param api_key a required API key, available from
 #'  <https://data.bls.gov/registrationEngine/>
-#' @param ... additional parameters to pass to [query_n_series]
+#' @param ... additional parameters to pass to [`query_n_series()`]
 #'
-#' @return a list of series results (a list of lists)
+#' @return a list of series results (a list of lists). For more information on
+#' the shape of the series results see [`get_series()`]
 #'
 #' @family blsR-requests
 #'
@@ -65,7 +74,7 @@ get_n_series <- function(series_ids, api_key, ...){
 #' Create and execute a query to retrieve popular series
 #'
 #' @param survey_id optional survey abbreviation
-#' @param ... additional parameters to pass to [bls_request]
+#' @param ... additional parameters to pass to [`bls_request()`]
 #'
 #' @return a character vector of series IDs
 #'
@@ -82,7 +91,7 @@ get_popular_series <- function(survey_id=NA, ...){
 
 #' Create and execute a query to retrieve all surveys
 #'
-#' @param ... additional parameters to pass to [bls_request]
+#' @param ... additional parameters to pass to [`bls_request()`]
 #'
 #' @return a table with a survey_abbreviation and survey_name columns
 #'
@@ -100,7 +109,7 @@ get_all_surveys <- function(...){
 #' Create and execute a query to retrieve information about a survey
 #'
 #' @param survey_id survey abbreviation
-#' @param ... additional parameters to pass to [bls_request]
+#' @param ... additional parameters to pass to [`bls_request()`]
 #'
 #' @return a list of survey information
 #'
@@ -118,7 +127,7 @@ get_survey_info <- function(survey_id, ...){
 #' Create and execute a query to retrieve the latest observation for a series
 #'
 #' @param survey_id BLS series ID
-#' @param ... additional parameters to pass to [bls_request]
+#' @param ... additional parameters to pass to [`bls_request()`]
 #'
 #' @return a datum in the form of a list
 #'

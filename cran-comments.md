@@ -1,3 +1,9 @@
+## blsR 0.3.0
+
+ * added new function tidy_table_as_zoo
+ * added new default behavior for converting numeric strings to numeric values
+ * added ability to access low level request object
+
 ## Resubmission
 This is a resubmission. In this version I have:
 

@@ -9,7 +9,7 @@ get_popular_series(survey_id = NA, ...)
 \arguments{
 \item{survey_id}{optional survey abbreviation}
 
-\item{...}{additional parameters to pass to \link{bls_request}}
+\item{...}{additional parameters to pass to \code{\link[=bls_request]{bls_request()}}}
 }
 \value{
 a character vector of series IDs

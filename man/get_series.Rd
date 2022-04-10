@@ -13,10 +13,19 @@ get_series(series_id, start_year = NA, end_year = NA, ...)
 
 \item{end_year}{numeric 4-digit year}
 
-\item{...}{additional parameters to pass to \link{bls_request}}
+\item{...}{additional parameters to pass to \code{\link[=bls_request]{bls_request()}}}
 }
 \value{
-a single series result, in list form
+a single series result, in list form. The resulting list will have
+the following items:
+\itemize{
+\item \code{seriesID}: a character vector of length 1 containing the \code{series_id}
+\item \code{data}: a list of lists containing the payload data. Each item of the list
+represents an observation. Each observation is a list with the following
+named items \code{year}, \code{period}, \code{periodName}, \code{value}, \code{footnotes}.
+Footnotes are a list. Additionally, the most recent observation will have
+an item named \code{latest} which will be marked as 'true'.
+}
 }
 \description{
 Create and execute query for a single time series

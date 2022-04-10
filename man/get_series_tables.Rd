@@ -10,6 +10,7 @@ get_series_tables(
   start_year = NA,
   end_year = NA,
   year_limit = 20,
+  parse_values = TRUE,
   ...
 )
 }
@@ -27,6 +28,10 @@ list items are named then the names will be used in the returned list}
 \item{year_limit}{optional number of years to paginate request by. Defaults
 to 20, the API request cap when using API key. Requests made without an API
 key are capped to 10 years.}
+
+\item{parse_values}{optional boolean. If set to \code{true} (default) it will
+attempt to parse the contents of \code{value} and cast numeric strings as numeric
+values. If set to \code{false} it will keep return a \code{value} column of strings.}
 
 \item{...}{additional parameters to pass to \code{\link{query_n_series}}}
 }

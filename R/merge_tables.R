@@ -57,7 +57,7 @@ merge_tables <- function(tables, join_by = c('year', 'period')){
   purrr::reduce(
     purrr::imap(tables, ~dplyr::select(.x, join_by, !!rlang::as_name(.y) := 'value')),
     dplyr::left_join,
-    by = join_by
+    by = dplyr::all_of(join_by)
   )
 }
 
@@ -122,12 +122,14 @@ tidy_periods <- function(table){
 }
 
 
-
 #' Convert a list of data entries as returned by BLS API to a table
 #'
-#' @param data a list of individual datum entries as returned the API
+#' @param data a list of individual datum entries as returned by the API
+#' @param parse_values optional boolean. If set to `true` (default) it will
+#' attempt to parse the contents of `value` and cast numeric strings as numeric
+#' values. If set to `false` it will retain `value` as a column of strings.
 #'
-#' @details currently `data_as_table` is just an alias for [dplyr::bind_rows()]
+#' @details currently `data_as_table` is very similar to [dplyr::bind_rows()]
 #'
 #' @return tibble flattening `data` into rows for entries and columns for fields
 #'
@@ -140,13 +142,21 @@ tidy_periods <- function(table){
 #' table <- data_as_table(series$data)
 #' }
 
-data_as_table <- function(data){
-  dplyr::mutate(dplyr::bind_rows(data), year = as.integer(.data$year))
+data_as_table <- function(data, parse_values=TRUE){
+  table <- dplyr::mutate(dplyr::bind_rows(data), year = as.integer(.data$year))
+  if(parse_values){
+    return(dplyr::mutate(table, value = readr::parse_guess(.data$value)))
+  }
+
+  return(table)
 }
 
 #' Convert a list of data entries as returned by BLS API to a table
 #'
 #' @param data a list of individual datum entries as returned the API
+#' @param parse_values optional boolean. If set to `true` (default) it will
+#' attempt to parse the contents of `value` and cast numeric strings as numeric
+#' values. If set to `false` it will retain `value` as a column of strings.
 #'
 #' @details An extension of [`data_as_table`] that replaces the BLS period
 #' format by removing columns `period` and `periodName` and adding `month` or
@@ -163,6 +173,51 @@ data_as_table <- function(data){
 #' table <- data_as_tidy_table(series$data)
 #' }
 
-data_as_tidy_table <- function(data){
-  tidy_periods( dplyr::bind_rows(data) )
+data_as_tidy_table <- function(data, parse_values=TRUE){
+  tidy_periods( data_as_table(data, parse_values = parse_values) )
+}
+
+.zoo_index_function <- function(table){
+  if('month' %in% names(table)){
+    index <- zoo::as.yearmon(paste(table$year, table$month), "%Y %m")
+  } else {
+    if('quarter' %in% names(table)){
+      index <- zoo::as.yearqtr(paste(table$year, table$quarter), "%Y %q")
+    } else {
+      index <- zoo::as.yearqtr(paste(table$year, 4), "%Y %q")
+    }
+  }
+  index
+}
+
+#' Convert a single series or n series tables into a zoo object
+#'
+#' @param table a table of results
+#' @param index_function optional closure. The closure parameter is the `table`
+#' and it should return a vector of values compatible with a `zoo` index. The
+#' default function will return a vector of [`zoo::yearmon`] for monthly series and
+#' [`zoo::yearqtr`] for quarterly or annual series.
+#'
+#' @details A utility function to easily convert retrieved BLS series into
+#' [`zoo::zoo`] or [`xts::xts`] objects.
+#'
+#' @return a `zoo`object
+#'
+#' @family blsR-utils
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' series <- get_series('LNS14000001')
+#' table <- data_as_tidy_table(series$data)
+#' zoo_obj <- tidy_table_as_zoo(table)
+#' }
+tidy_table_as_zoo <- function(table, index_function = .zoo_index_function){
+  zoo::zoo(
+    dplyr::select(
+      table,
+      !dplyr::any_of(c('year','month','quarter'))
+    ),
+    order.by = index_function(table)
+  )
 }

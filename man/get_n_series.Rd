@@ -14,10 +14,11 @@ list items are named then the names will be used in the returned list}
 \item{api_key}{a required API key, available from
 \url{https://data.bls.gov/registrationEngine/}}
 
-\item{...}{additional parameters to pass to \link{query_n_series}}
+\item{...}{additional parameters to pass to \code{\link[=query_n_series]{query_n_series()}}}
 }
 \value{
-a list of series results (a list of lists)
+a list of series results (a list of lists). For more information on
+the shape of the series results see \code{\link[=get_series]{get_series()}}
 }
 \description{
 Create and execute a query to retrieve one or more time series and their
