@@ -2,6 +2,10 @@
 
  * There was a NOTE in a prior version regarding an Imports not being 
  imported-from. The package was not being used and has been moved to Suggests.
+ * RHUB NOTE under windows: checking for detritus in the temp directory
+   Found the following files/directories:
+     'lastMiKTeXException'
+     
 
 ## Resubmission
 This is a resubmission. In this version I have:

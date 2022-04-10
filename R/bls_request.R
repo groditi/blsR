@@ -13,7 +13,7 @@
 #' @param api_key string, only necessary for retrieving multiple series in one
 #' request, requesting calculations, or custom time frames and catalog data
 #' @param user_agent string, optional
-#' @param process_response function, optional. processes the [`httr::response`]
+#' @param process_response function, optional. processes the `httr` response
 #'  object. The default function will return the JSON payload parsed into a list
 #' @param ... further arguments will be passed to `process_response` when called
 #'

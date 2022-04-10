@@ -55,7 +55,7 @@ merge_tables <- function(tables, join_by = c('year', 'period')){
     stop('merge_tables requires a named list as input "tables".')
 
   purrr::reduce(
-    purrr::imap(tables, ~dplyr::select(.x, join_by, !!rlang::as_name(.y) := 'value')),
+    purrr::imap(tables, ~dplyr::select(.x, dplyr::all_of(join_by), !!rlang::as_name(.y) := 'value')),
     dplyr::left_join,
     by = dplyr::all_of(join_by)
   )

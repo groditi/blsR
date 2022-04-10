@@ -20,7 +20,7 @@ request, requesting calculations, or custom time frames and catalog data}
 
 \item{user_agent}{string, optional}
 
-\item{process_response}{function, optional. processes the \code{\link[httr:response]{httr::response}}
+\item{process_response}{function, optional. processes the \code{httr} response
 object. The default function will return the JSON payload parsed into a list}
 
 \item{...}{further arguments will be passed to \code{process_response} when called}
