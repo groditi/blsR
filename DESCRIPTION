@@ -21,11 +21,11 @@ RoxygenNote: 7.1.2
 Imports: 
     dplyr,
     httr,
-    jsonlite,
     purrr,
     rlang,
     readr
 Suggests: 
     testthat (>= 3.0.0),
-    zoo
+    zoo,
+    jsonlite
 Config/testthat/edition: 3

@@ -1,8 +1,7 @@
 ## blsR 0.3.0
 
- * added new function tidy_table_as_zoo
- * added new default behavior for converting numeric strings to numeric values
- * added ability to access low level request object
+ * There was a NOTE in a prior version regarding an Imports not being 
+ imported-from. The package was not being used and has been moved to Suggests.
 
 ## Resubmission
 This is a resubmission. In this version I have:
