@@ -82,6 +82,23 @@ test_that("merges work", {
   expect_named(merged_tidy_table, c('year','month','uer1','uer2'))
 })
 
+test_that("merge join logic works", {
+  table1 <- data_as_table(sample_response$data)
+  table2 <- data_as_table(sample_response2$data)[-1,]
+  merged_table <- merge_tables(list(uer1 = table1, uer2 = table2))
+  expect_equal(nrow(merged_table), 12)
+  expect_equal(ncol(merged_table), 4)
+  expect_named(merged_table, c('year','period','uer1','uer2'))
+
+
+  tidy_table1 <- data_as_tidy_table(sample_response$data)
+  tidy_table2 <- data_as_tidy_table(sample_response2$data)[-1,]
+  merged_tidy_table <- merge_tidy_tables(list(uer1 = tidy_table1, uer2 = tidy_table2))
+  expect_equal(nrow(merged_tidy_table), 12)
+  expect_equal(ncol(merged_tidy_table), 4)
+  expect_named(merged_tidy_table, c('year','month','uer1','uer2'))
+})
+
 test_that("as_zoo work", {
   tidy_table <- data_as_tidy_table(sample_response$data, parse_values = FALSE)
   zoo_table  <- tidy_table_as_zoo(tidy_table)

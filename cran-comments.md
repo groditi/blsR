@@ -1,3 +1,7 @@
+## blsR 0.3.1
+
+ * minor release to fix unreliable merge behavior
+
 ## blsR 0.3.0
 
  * There was a NOTE in a prior version regarding an Imports not being 

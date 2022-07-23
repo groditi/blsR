@@ -1,3 +1,13 @@
+# blsR 0.3.1
+
+  * Previously, when `merge_tables` was used applied to tables with different
+  periods, results were dependent on the order in which tables were arranged-in
+  on the arguments list due to the use of 'left_join' logic. The updated
+  implementation will return a row for every period in any of the tables,
+  making it insensitive to the order of the tables in the input. As a 
+  side-effect of the implementation the resulting table will return the merged
+  table ordered-by the column(s) in the `join_by` argument in ascending order.
+  
 # blsR 0.3.0
 
   * `data_as_table`, `get_series_table`, `get_series_tables`, and 

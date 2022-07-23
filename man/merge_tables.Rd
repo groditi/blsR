@@ -11,7 +11,8 @@ merge_tables(tables, join_by = c("year", "period"))
 data with different (monthly, quarterly, annual) periodicity is unsupported.
 The list names will be used as column names in the output.}
 
-\item{join_by}{an optional character vector of columns to use to join tables.}
+\item{join_by}{an optional character vector of columns to use to join tables.
+The result will be sorted in ascending order using these columns.}
 }
 \value{
 tibble

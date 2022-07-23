@@ -36,6 +36,7 @@ merge_tidy_tables <- function(tidy_tables){
 #' data with different (monthly, quarterly, annual) periodicity is unsupported.
 #' The list names will be used as column names in the output.
 #' @param join_by an optional character vector of columns to use to join tables.
+#' The result will be sorted in ascending order using these columns.
 #'
 #' @return tibble
 #'
@@ -53,9 +54,24 @@ merge_tidy_tables <- function(tidy_tables){
 merge_tables <- function(tables, join_by = c('year', 'period')){
   if( !is.list(tables) || !is.character(names(tables)) )
     stop('merge_tables requires a named list as input "tables".')
+  keys <- dplyr::arrange(
+    unique(
+      purrr::reduce(
+        purrr::map(tables, ~dplyr::select(.x, dplyr::all_of(join_by))),
+        dplyr::union
+      )
+    ),
+    !!!rlang::syms(join_by)
+  )
 
   purrr::reduce(
-    purrr::imap(tables, ~dplyr::select(.x, dplyr::all_of(join_by), !!rlang::as_name(.y) := 'value')),
+    purrr::prepend(
+      purrr::imap(
+        tables,
+        ~dplyr::select(.x, dplyr::all_of(join_by), !!rlang::as_name(.y) := 'value')
+      ),
+      list(keys=keys)
+    ),
     dplyr::left_join,
     by = dplyr::all_of(join_by)
   )
