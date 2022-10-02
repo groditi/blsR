@@ -15,7 +15,7 @@
 #' values. If set to `false` it will keep return a `value` column of strings.
 #' @param ... additional parameters to pass to [`bls_request`]
 #'
-#' @return a tibble of observations
+#' @return a tibble of observations or `NA` if the request had zero results.
 #'
 #' @family blsR-requests
 #'
@@ -34,6 +34,11 @@ get_series_table <- function(
   if(is.na(api_key)) year_limit <- 10
   #auto-magically paginate results
   if(!is.na(start_year) && (end_year - start_year) >= year_limit ){
+    rlang::inform( sprintf(
+      'Year %i to %i is longer than %i API limit. Performing multiple requests',
+      start_year, end_year, year_limit
+    ) )
+
     tables <- lapply(
       seq(0, ceiling(((end_year - start_year) + 1) / year_limit) - 1) * year_limit,
       function(x) get_series_table(
@@ -46,13 +51,14 @@ get_series_table <- function(
       )
     )
 
-    return(purrr::reduce(tables, dplyr::union_all))
+    return(purrr::reduce(purrr::keep(tables, is.data.frame), dplyr::union_all))
   }
-  #query_series(series_id, start_year, end_year, ...)
-  data_as_table(
-    get_series(series_id, start_year, end_year, api_key=api_key, ...)$data,
-    parse_values
-  )
+
+  series <- get_series(series_id, start_year, end_year, api_key=api_key, ...)
+  if(length(series$data) > 0)
+    return(data_as_table(series$data,parse_values))
+
+  NA
 }
 
 
@@ -72,7 +78,8 @@ get_series_table <- function(
 #' values. If set to `false` it will keep return a `value` column of strings.
 #' @param ... additional parameters to pass to [`query_n_series`]
 #'
-#' @return a list of tables
+#' @return a list of tibbles. Series requests which return observations will be
+#' a tibble. Series with no observations will be `NA`
 #'
 #' @family blsR-requests
 #'
@@ -99,6 +106,11 @@ get_series_tables <- function(
   if(is.na(api_key)) year_limit <- 10
   #auto-magically paginate results
   if(!is.na(start_year) && (end_year - start_year) >= year_limit ){
+    rlang::inform( sprintf(
+      'Year %i to %i is longer than %i API limit. Performing multiple requests',
+      start_year, end_year, year_limit
+    ) )
+
     pages <- lapply(
       seq(0, ceiling(((end_year - start_year) + 1) / year_limit) - 1) * year_limit,
       function(x) get_series_tables(
@@ -110,18 +122,21 @@ get_series_tables <- function(
         ...
       )
     )
-    #invert the indices so the map reduce is simpler
-    tables <- purrr::transpose(pages)
+    #invert the indices so the map reduce is simpler and keep only
+    tables <- purrr::map(purrr::transpose(pages), purrr::discard, rlang::is_na)
 
-    return( purrr::map(tables, ~purrr::reduce(.x, dplyr::union_all)) )
+    return( purrr::map(tables, ~purrr::reduce(rev(.x), dplyr::union_all) ) )
   }
 
-  lapply(
-    get_n_series(series_ids, api_key, start_year, end_year, ...),
-    function(x) { data_as_table(x[['data']], parse_values) }
+  series_data <- purrr::map(
+    get_n_series(series_ids, api_key, start_year, end_year, ...), 'data'
+  )
+  purrr::modify_if(
+    purrr::modify_if(series_data, rlang::is_empty, ~NA),
+    purrr::negate(rlang::is_na),
+    data_as_table, parse_values
   )
 }
-
 
 #' Retrieve multiple time series in one API request and return a single tibble
 #'

@@ -1,3 +1,16 @@
+# blsR 0.3.2
+
+  * Previously, if `get_series_table` or `get_series_tables` were called for a 
+  time range and series combination with no observations available an error was 
+  triggered by `data_as_table` failing. Series and period combinations with no
+  results now return `NA`.
+  * `get_series_table` and `get_series_tables` now notify if the request is 
+  broken up into multiple API calls.
+  * For requests broken up into multiple API calls, `get_series_tables` now
+  merges the results descending order to match the order of the returned data.
+  * `get_series` and `get_n_series` now notify if request returns 0 observations
+  * `data_as_table` throws an error if `data` argument is empty or not a list.
+
 # blsR 0.3.1
 
   * Previously, when `merge_tables` was used applied to tables with different

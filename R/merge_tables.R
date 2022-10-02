@@ -52,7 +52,7 @@ merge_tidy_tables <- function(tidy_tables){
 #' }
 #'
 merge_tables <- function(tables, join_by = c('year', 'period')){
-  if( !is.list(tables) || !is.character(names(tables)) )
+  if( !is.list(tables) | !is.character(names(tables)) | any(is.na(names(tables))) )
     stop('merge_tables requires a named list as input "tables".')
   keys <- dplyr::arrange(
     unique(
@@ -159,6 +159,8 @@ tidy_periods <- function(table){
 #' }
 
 data_as_table <- function(data, parse_values=TRUE){
+  if(!purrr::is_list(data) || length(data) < 1)
+    rlang::abort('data_as_table requires argument "data" must be a list with one or more elements')
   table <- dplyr::mutate(dplyr::bind_rows(data), year = as.integer(.data$year))
   if(parse_values){
     return(dplyr::mutate(table, value = readr::parse_guess(.data$value)))

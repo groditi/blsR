@@ -1,3 +1,18 @@
+
+.empty_result_warning <- function(series_id, alias=NA, start_year, end_year, call=rlang::caller_env()){
+  if(rlang::is_na(alias))
+    error_message_start <- sprintf('Request for "%s"', series_id)
+  else
+    error_message_start <- sprintf('Request for "%s" (%s)', series_id, alias)
+
+  error_message <- sprintf(
+    '%s succeeded but returned 0 results between years %i and %i.',
+    error_message_start, start_year, end_year
+  )
+  rlang::inform(error_message, call=call)
+}
+
+
 #' Create and execute query for a single time series
 #'
 #' @param series_id BLS series ID
@@ -27,6 +42,8 @@
 #' }
 get_series <- function(series_id, start_year=NA, end_year=NA, ...){
   results <- bls_request(query_series(series_id, start_year, end_year), ...)
+  if(rlang::is_empty(results$series[[1]]$data))
+    .empty_result_warning(series_id, NA, start_year, end_year)
   return(results$series[[1]])
 }
 
@@ -37,6 +54,8 @@ get_series <- function(series_id, start_year=NA, end_year=NA, ...){
 #' list items are named then the names will be used in the returned list
 #' @param api_key a required API key, available from
 #'  <https://data.bls.gov/registrationEngine/>
+#' @param start_year numeric 4-digit year
+#' @param end_year numeric 4-digit year
 #' @param ... additional parameters to pass to [`query_n_series()`]
 #'
 #' @return a list of series results (a list of lists). For more information on
@@ -53,7 +72,7 @@ get_series <- function(series_id, start_year=NA, end_year=NA, ...){
 #' series_ids <- list(uer.men ='LNS14000001', uer.women = 'LNS14000002')
 #' uer_series <- get_n_series(series_ids, 'your-api-key-here' )
 #' }
-get_n_series <- function(series_ids, api_key, ...){
+get_n_series <- function(series_ids, api_key, start_year=NA, end_year=NA, ...){
   bls_series_ids <- vector(mode = "character", length = length(series_ids))
   series_aliases <- vector(mode = "character", length = length(series_ids))
 
@@ -65,9 +84,20 @@ get_n_series <- function(series_ids, api_key, ...){
     series_aliases <- series_ids
   }
 
-  results <- bls_request(query_n_series(bls_series_ids, ...), api_key=api_key)
-  names(results$series) <- series_aliases
-  return(results$series)
+  results <- rlang::set_names(
+    bls_request(
+      query_n_series(bls_series_ids, start_year, end_year), api_key=api_key
+    )$series,
+    series_aliases
+  )
+
+  no_results <- purrr::map(purrr::keep(results, ~rlang::is_empty(.x$data)), 'seriesID')
+  purrr::iwalk(
+    no_results, .empty_result_warning,
+    start_year, end_year, rlang::caller_env()
+  )
+
+  return(results)
 }
 
 
