@@ -1,7 +1,7 @@
 # blsR 0.3.2
 
   * Previously, if `get_series_table` or `get_series_tables` were called for a 
-  time range and series combination with no observations available an error was 
+  date range and series combination with no observations available, an error was 
   triggered by `data_as_table` failing. Series and period combinations with no
   results now return `NA`.
   * `get_series_table` and `get_series_tables` now notify if the request is 
