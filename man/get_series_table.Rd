@@ -35,7 +35,7 @@ values. If set to \code{false} it will keep return a \code{value} column of stri
 \item{...}{additional parameters to pass to \code{\link{bls_request}}}
 }
 \value{
-a tibble of observations
+a tibble of observations or \code{NA} if the request had zero results.
 }
 \description{
 Retrieve a single time series from BLS API and return a tibble

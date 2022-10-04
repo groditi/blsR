@@ -36,7 +36,8 @@ values. If set to \code{false} it will keep return a \code{value} column of stri
 \item{...}{additional parameters to pass to \code{\link{query_n_series}}}
 }
 \value{
-a list of tables
+a list of tibbles. Series requests which return observations will be
+a tibble. Series with no observations will be \code{NA}
 }
 \description{
 Retrieve multiple time series in one API request and return a list of tibbles
