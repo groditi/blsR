@@ -54,35 +54,33 @@ bls_request <- function(
     if('payload' %in% names(query)){
       if('seriesid' %in% names(query$payload)){
         if(is.na(api_key))
-          warning('api_key is required for multiple series requests.')
+          rlang::warn('api_key is required for multiple series requests.')
         query$payload[['registrationkey']] <- api_key
+        query$payload$seriesid <- I(query$payload$seriesid)
       }
     }
 
     response <- httr::POST(url=url, ua, body=query$payload, encode="json")
   }
 
-  return(
-    tryCatch(
-      process_response(response, ...),
-      error = function(e) stop(paste(c('Error processing', url, e), ': '))
-    )
-  )
+  return(process_response(response, ...))
 }
 
 .process_response <- function(response, ...){
 
   #die if the format of the response content isnt json
   if(httr::http_type(response) != "application/json"){
-    stop("http request did not return json", call. = FALSE)
+    rlang::abort("http request did not return json")
   }
 
   json_response <- httr::content(response, simplifyVector=FALSE, ...)
 
   #die if request wasn't successful
   if(json_response$status != 'REQUEST_SUCCEEDED') {
-    stop(paste(json_response$message, '; '), call. = FALSE)
+    rlang::abort(paste(json_response$message, '; '))
   }
+  purrr::walk(json_response$message, rlang::inform, call = rlang::current_env)
+
   return(json_response$Results)
 }
 
