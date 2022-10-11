@@ -161,10 +161,11 @@ tidy_periods <- function(table){
 data_as_table <- function(data, parse_values=TRUE){
   if(!purrr::is_list(data) || length(data) < 1)
     rlang::abort('data_as_table requires argument "data" must be a list with one or more elements')
-  table <- dplyr::mutate(dplyr::bind_rows(data), year = as.integer(.data$year))
-  if(parse_values){
+
+  clean <- purrr::map(data, `[`, c('year','period', 'periodName','value'))
+  table <- dplyr::mutate(dplyr::bind_rows(clean), year = as.integer(.data$year))
+  if(parse_values)
     return(dplyr::mutate(table, value = readr::parse_guess(.data$value)))
-  }
 
   return(table)
 }
