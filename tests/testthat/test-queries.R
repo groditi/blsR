@@ -44,5 +44,4 @@ test_that("urls", {
  expect_equal(parse_url(query8$url)$path, 'publicAPI/v2/timeseries/data/test')
  expect_mapequal(parse_url(query8$url)$query, list(latest='TRUE'))
 
-}
-)
+})
