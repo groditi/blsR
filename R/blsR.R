@@ -2,12 +2,13 @@
 #'
 #' @description
 #' `blsR` provides functions for retrieving and processing data from the BLS API.
-#' The functions are divided into 4 categories: query generators, query requests,
-#' result processors, and the user-friendly simplified interface.
+#' The functions are divided into 5 categories: query generators, query requests,
+#' the spanning functions, result processors, and the user-friendly simplified
+#' interface.
 #'
 #' @section API Key and Definition:
 #'
-#' The API key is an optional parameter, but it is recommended you register for
+#' The API key is an optional argument, but it is recommended you register for
 #' an API key and use it. Requests without a key are limited to 10 years of data
 #' per request, 25 series per query, and 25 queries per day. You can register at:
 #'  <https://data.bls.gov/registrationEngine/>
@@ -64,6 +65,21 @@
 #' about a survey
 #' * [`get_latest_observation()`] - Create and execute a query to retrieve the
 #' latest observation for a time series
+#'
+#' @section Spanning functions:
+#'
+#' The spanning functions implement the behavior around breaking up a request
+#' that exceeds the API limits into multiple requests within the API limits and
+#' then reducing the results. Currently, spanning is only supported across time
+#' but there is plans to also support spanning across the number of series
+#' requested. These functions are low-level internal implementations and most
+#' users should never need to interact with them directly.
+#'
+#' * [`span_series_request()`] - Breaks up a request into multiple queries,
+#' executes the queries, and returns the reduced results
+#' * [`span_request_queries()`] - Breaks up a request into a list of queries
+#' * [`reduce_spanned_responses()`] - Reduces a list of responses into one
+#' series list
 #'
 #' @section Result Processors:
 #'
