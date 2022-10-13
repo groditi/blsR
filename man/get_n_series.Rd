@@ -5,7 +5,19 @@
 \title{Create and execute a query to retrieve one or more time series and their
 catalog data}
 \usage{
-get_n_series(series_ids, api_key, start_year = NA, end_year = NA, ...)
+get_n_series(
+  series_ids,
+  api_key,
+  start_year = NA,
+  end_year = NA,
+  year_limit = 20,
+  span = TRUE,
+  catalog = FALSE,
+  calculations = FALSE,
+  annualaverage = FALSE,
+  aspects = FALSE,
+  ...
+)
 }
 \arguments{
 \item{series_ids}{a list or character vector of BLS time-series IDs. If the
@@ -18,11 +30,49 @@ list items are named then the names will be used in the returned list}
 
 \item{end_year}{numeric 4-digit year}
 
-\item{...}{additional parameters to pass to \code{\link[=query_n_series]{query_n_series()}}}
+\item{year_limit}{optional number of years to paginate request by. Defaults
+to 20, the API request cap when using API key. Requests made without an API
+key are capped to 10 years.}
+
+\item{span}{when set to \code{TRUE}, requests where the number of years between
+\code{start_year} and \code{end_year} exceed \code{year_limit} will be performed as
+multiple requests automatically}
+
+\item{catalog}{boolean. If set to \code{TRUE}, element item in the list returned
+may include a named item \code{catalog}, a named list containing descriptive
+information about the series. Not all series have a catalog entry
+available.}
+
+\item{calculations}{boolean. If set to \code{TRUE}, each element in the \code{data}
+list for each series returned may include an additional named element
+\code{calculations}, a named list containing two items, \code{net_changes} and
+\code{pct_changes}, each of them a named list which may include items \code{1}, \code{3},
+\code{6}, \code{12} which represent 1, 3, 6, and 12 month net changes and percent
+changes respectively. Not all data series will have enough data points to
+include these calculations.}
+
+\item{annualaverage}{boolean. If set to \code{TRUE}, each \code{data} list may include
+an additional element for a an annual average of the time series, which is
+usually presented as month 13 in monthly data. Not all data series
+support this feature.}
+
+\item{aspects}{boolean. If set to \code{TRUE}, each item in the \code{data} list
+for each series returned may include an additional named element \code{aspects},
+which will be a named list. Not all data series support this feature.}
+
+\item{...}{additional arguments to pass to \code{\link[=bls_request]{bls_request()}}}
 }
 \value{
-a list of series results (a list of lists). For more information on
-the shape of the series results see \code{\link[=get_series]{get_series()}}
+a list of series results. Each element of the returned list is
+a named list guaranteed to have two items, \code{SeriesID} and \code{data} and
+optionally \code{catalog}. The unnamed list \code{data} will have 0 or more elements,
+each one a named list representing an observation in the time series. Each
+observation is guaranteed to include the elements \code{year}, \code{period},
+\code{periodName}, \code{value}, and \code{footnotes}. Footnotes are a list of named lists.
+The rest are scalar values. If the the most recent observation is included,
+that observation will have an element named \code{latest} which will contain the
+text '\code{true}'. If \code{calculations} or \code{aspects} were requested they will be
+present as named elements in each observation.
 }
 \description{
 Create and execute a query to retrieve one or more time series and their
@@ -46,6 +96,8 @@ Other blsR-requests:
 \code{\link{get_series_tables}()},
 \code{\link{get_series_table}()},
 \code{\link{get_series}()},
-\code{\link{get_survey_info}()}
+\code{\link{get_survey_info}()},
+\code{\link{reduce_spanned_responses}()},
+\code{\link{span_series_request}()}
 }
 \concept{blsR-requests}

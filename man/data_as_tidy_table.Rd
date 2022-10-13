@@ -35,6 +35,9 @@ Other blsR-utils:
 \code{\link{data_as_table}()},
 \code{\link{merge_tables}()},
 \code{\link{merge_tidy_tables}()},
+\code{\link{reduce_spanned_responses}()},
+\code{\link{span_request_queries}()},
+\code{\link{span_series_request}()},
 \code{\link{tidy_periods}()},
 \code{\link{tidy_table_as_zoo}()}
 }

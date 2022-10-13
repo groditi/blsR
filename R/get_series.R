@@ -55,7 +55,7 @@
 #' @param span when set to `TRUE`, requests where the number of years between
 #'   `start_year` and `end_year` exceed `year_limit` will be performed as
 #'   multiple requests automatically
-#' @param ... additional parameters to pass to [`bls_request()`]
+#' @param ... additional arguments to pass to [`bls_request()`]
 #'
 #' @return a single series result, in list form. The resulting list will have
 #' the following items:
@@ -124,7 +124,7 @@ get_series <- function(
 #' @param aspects boolean. If set to `TRUE`, each item in the `data` list
 #' for each series returned may include an additional named element `aspects`,
 #' which will be a named list. Not all data series support this feature.
-#' @param ... additional parameters to pass to [`bls_request()`]
+#' @param ... additional arguments to pass to [`bls_request()`]
 #'
 #' @return a list of series results. Each element of the returned list is
 #' a named list guaranteed to have two items, `SeriesID` and `data` and
@@ -184,7 +184,7 @@ get_n_series <- function(
 #' Create and execute a query to retrieve popular series
 #'
 #' @param survey_id optional survey abbreviation
-#' @param ... additional parameters to pass to [`bls_request()`]
+#' @param ... additional arguments to pass to [`bls_request()`]
 #'
 #' @return a character vector of series IDs
 #'
@@ -201,7 +201,7 @@ get_popular_series <- function(survey_id=NA, ...){
 
 #' Create and execute a query to retrieve all surveys
 #'
-#' @param ... additional parameters to pass to [`bls_request()`]
+#' @param ... additional arguments to pass to [`bls_request()`]
 #'
 #' @return a table with a survey_abbreviation and survey_name columns
 #'
@@ -219,7 +219,7 @@ get_all_surveys <- function(...){
 #' Create and execute a query to retrieve information about a survey
 #'
 #' @param survey_id survey abbreviation
-#' @param ... additional parameters to pass to [`bls_request()`]
+#' @param ... additional arguments to pass to [`bls_request()`]
 #'
 #' @return a list of survey information
 #'
@@ -237,7 +237,7 @@ get_survey_info <- function(survey_id, ...){
 #' Create and execute a query to retrieve the latest observation for a series
 #'
 #' @param survey_id BLS series ID
-#' @param ... additional parameters to pass to [`bls_request()`]
+#' @param ... additional arguments to pass to [`bls_request()`]
 #'
 #' @return a datum in the form of a list
 #'

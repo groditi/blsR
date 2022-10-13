@@ -73,7 +73,8 @@ merge_tables <- function(tables, join_by = c('year', 'period')){
       list(keys=keys)
     ),
     dplyr::left_join,
-    by = dplyr::all_of(join_by)
+#    by = dplyr::all_of(join_by)
+    by = join_by
   )
 }
 
@@ -105,7 +106,7 @@ merge_tables <- function(tables, join_by = c('year', 'period')){
 
 tidy_periods <- function(table){
   if( substr(table$period[1], 1, 1) == 'A' ){
-    return(dplyr::arrange(dplyr::select(table, .data$year, .data$value), .data$year))
+    return(dplyr::arrange(dplyr::select(table, dplyr::all_of('year', 'value') ), .data$year))
   }
   if( substr(table$period[1], 1, 1) == 'M' ){
     return(
@@ -115,7 +116,7 @@ tidy_periods <- function(table){
             dplyr::mutate(table, month = as.integer(substr(.data$period, 2, 3))),
             -'period', -'periodName'
           ),
-          .data$month, .after='year'
+          'month', .after='year'
         ),
         .data$year, .data$month
       )
@@ -129,7 +130,7 @@ tidy_periods <- function(table){
             dplyr::mutate(table, quarter = as.integer(substr(.data$period, 2, 3))),
             -'period', -'periodName'
           ),
-          .data$quarter, .after='year'
+          'quarter', .after='year'
         ),
         .data$year, .data$quarter
       )
@@ -212,7 +213,7 @@ data_as_tidy_table <- function(data, parse_values=TRUE){
 #' Convert a single series or n series tables into a zoo object
 #'
 #' @param table a table of results
-#' @param index_function optional closure. The closure parameter is the `table`
+#' @param index_function optional closure. The closure argument is the `table`
 #' and it should return a vector of values compatible with a `zoo` index. The
 #' default function will return a vector of [`zoo::yearmon`] for monthly series and
 #' [`zoo::yearqtr`] for quarterly or annual series.

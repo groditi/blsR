@@ -9,7 +9,7 @@ get_survey_info(survey_id, ...)
 \arguments{
 \item{survey_id}{survey abbreviation}
 
-\item{...}{additional parameters to pass to \code{\link[=bls_request]{bls_request()}}}
+\item{...}{additional arguments to pass to \code{\link[=bls_request]{bls_request()}}}
 }
 \value{
 a list of survey information
@@ -29,6 +29,8 @@ Other blsR-requests:
 \code{\link{get_popular_series}()},
 \code{\link{get_series_tables}()},
 \code{\link{get_series_table}()},
-\code{\link{get_series}()}
+\code{\link{get_series}()},
+\code{\link{reduce_spanned_responses}()},
+\code{\link{span_series_request}()}
 }
 \concept{blsR-requests}

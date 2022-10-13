@@ -9,7 +9,7 @@ get_popular_series(survey_id = NA, ...)
 \arguments{
 \item{survey_id}{optional survey abbreviation}
 
-\item{...}{additional parameters to pass to \code{\link[=bls_request]{bls_request()}}}
+\item{...}{additional arguments to pass to \code{\link[=bls_request]{bls_request()}}}
 }
 \value{
 a character vector of series IDs
@@ -29,6 +29,8 @@ Other blsR-requests:
 \code{\link{get_series_tables}()},
 \code{\link{get_series_table}()},
 \code{\link{get_series}()},
-\code{\link{get_survey_info}()}
+\code{\link{get_survey_info}()},
+\code{\link{reduce_spanned_responses}()},
+\code{\link{span_series_request}()}
 }
 \concept{blsR-requests}

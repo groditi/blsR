@@ -9,7 +9,7 @@ tidy_table_as_zoo(table, index_function = .zoo_index_function)
 \arguments{
 \item{table}{a table of results}
 
-\item{index_function}{optional closure. The closure parameter is the \code{table}
+\item{index_function}{optional closure. The closure argument is the \code{table}
 and it should return a vector of values compatible with a \code{zoo} index. The
 default function will return a vector of \code{\link[zoo:yearmon]{zoo::yearmon}} for monthly series and
 \code{\link[zoo:yearqtr]{zoo::yearqtr}} for quarterly or annual series.}
@@ -37,6 +37,9 @@ Other blsR-utils:
 \code{\link{data_as_tidy_table}()},
 \code{\link{merge_tables}()},
 \code{\link{merge_tidy_tables}()},
+\code{\link{reduce_spanned_responses}()},
+\code{\link{span_request_queries}()},
+\code{\link{span_series_request}()},
 \code{\link{tidy_periods}()}
 }
 \concept{blsR-utils}

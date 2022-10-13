@@ -31,7 +31,7 @@ list items are named then the names will be used in the returned list}
 attempt to parse the values of requested data series and cast numeric strings
 as numeric values. If set to \code{false} it will retain them as strings.}
 
-\item{...}{additional parameters to pass to \code{\link{get_series_tables}}}
+\item{...}{additional arguments to pass to \code{\link{get_series_tables}}}
 }
 \value{
 a tibble of multiple merged time series
@@ -59,6 +59,8 @@ Other blsR-requests:
 \code{\link{get_series_tables}()},
 \code{\link{get_series_table}()},
 \code{\link{get_series}()},
-\code{\link{get_survey_info}()}
+\code{\link{get_survey_info}()},
+\code{\link{reduce_spanned_responses}()},
+\code{\link{span_series_request}()}
 }
 \concept{blsR-requests}

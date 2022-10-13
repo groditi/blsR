@@ -7,7 +7,7 @@
 get_all_surveys(...)
 }
 \arguments{
-\item{...}{additional parameters to pass to \code{\link[=bls_request]{bls_request()}}}
+\item{...}{additional arguments to pass to \code{\link[=bls_request]{bls_request()}}}
 }
 \value{
 a table with a survey_abbreviation and survey_name columns
@@ -27,6 +27,8 @@ Other blsR-requests:
 \code{\link{get_series_tables}()},
 \code{\link{get_series_table}()},
 \code{\link{get_series}()},
-\code{\link{get_survey_info}()}
+\code{\link{get_survey_info}()},
+\code{\link{reduce_spanned_responses}()},
+\code{\link{span_series_request}()}
 }
 \concept{blsR-requests}

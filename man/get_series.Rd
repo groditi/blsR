@@ -4,7 +4,14 @@
 \alias{get_series}
 \title{Create and execute query for a single time series}
 \usage{
-get_series(series_id, start_year = NA, end_year = NA, ...)
+get_series(
+  series_id,
+  start_year = NA,
+  end_year = NA,
+  year_limit = 10,
+  span = TRUE,
+  ...
+)
 }
 \arguments{
 \item{series_id}{BLS series ID}
@@ -13,7 +20,15 @@ get_series(series_id, start_year = NA, end_year = NA, ...)
 
 \item{end_year}{numeric 4-digit year}
 
-\item{...}{additional parameters to pass to \code{\link[=bls_request]{bls_request()}}}
+\item{year_limit}{optional number of years to paginate request by. Defaults
+to 10, the API request cap when using no API key. Requests made with an API
+key, which can be provided in \code{...}, are capped to 20 years.}
+
+\item{span}{when set to \code{TRUE}, requests where the number of years between
+\code{start_year} and \code{end_year} exceed \code{year_limit} will be performed as
+multiple requests automatically}
+
+\item{...}{additional arguments to pass to \code{\link[=bls_request]{bls_request()}}}
 }
 \value{
 a single series result, in list form. The resulting list will have
@@ -47,6 +62,8 @@ Other blsR-requests:
 \code{\link{get_popular_series}()},
 \code{\link{get_series_tables}()},
 \code{\link{get_series_table}()},
-\code{\link{get_survey_info}()}
+\code{\link{get_survey_info}()},
+\code{\link{reduce_spanned_responses}()},
+\code{\link{span_series_request}()}
 }
 \concept{blsR-requests}

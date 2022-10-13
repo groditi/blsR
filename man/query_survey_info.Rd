@@ -25,6 +25,7 @@ Other blsR-queries:
 \code{\link{query_latest_observation}()},
 \code{\link{query_n_series}()},
 \code{\link{query_popular_series}()},
-\code{\link{query_series}()}
+\code{\link{query_series}()},
+\code{\link{span_request_queries}()}
 }
 \concept{blsR-queries}

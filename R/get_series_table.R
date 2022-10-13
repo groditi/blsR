@@ -13,7 +13,7 @@
 #' @param parse_values optional boolean. If set to `true` (default) it will
 #' attempt to parse the contents of `value` and cast numeric strings as numeric
 #' values. If set to `false` it will keep return a `value` column of strings.
-#' @param ... additional parameters to pass to [`get_series`]
+#' @param ... additional arguments to pass to [`get_series`]
 #'
 #' @return a tibble of observations or `NA` if the request had zero results.
 #'
@@ -56,7 +56,7 @@ get_series_table <- function(
 #' @param parse_values optional boolean. If set to `true` (default) it will
 #' attempt to parse the contents of `value` and cast numeric strings as numeric
 #' values. If set to `false` it will keep return a `value` column of strings.
-#' @param ... additional parameters to pass to [`get_n_series`]
+#' @param ... additional arguments to pass to [`get_n_series`]
 #'
 #' @return a list of tibbles. Series requests which return observations will be
 #' a tibble. Series with no observations will be `NA`
@@ -105,7 +105,7 @@ get_series_tables <- function(
 #' @param parse_values optional boolean. If set to `true` (default) it will
 #' attempt to parse the values of requested data series and cast numeric strings
 #' as numeric values. If set to `false` it will retain them as strings.
-#' @param ... additional parameters to pass to [`get_series_tables`]
+#' @param ... additional arguments to pass to [`get_series_tables`]
 #'
 #' @return a tibble of multiple merged time series
 #'

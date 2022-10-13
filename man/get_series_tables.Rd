@@ -33,7 +33,7 @@ key are capped to 10 years.}
 attempt to parse the contents of \code{value} and cast numeric strings as numeric
 values. If set to \code{false} it will keep return a \code{value} column of strings.}
 
-\item{...}{additional parameters to pass to \code{\link{query_n_series}}}
+\item{...}{additional arguments to pass to \code{\link{get_n_series}}}
 }
 \value{
 a list of tibbles. Series requests which return observations will be
@@ -66,6 +66,8 @@ Other blsR-requests:
 \code{\link{get_popular_series}()},
 \code{\link{get_series_table}()},
 \code{\link{get_series}()},
-\code{\link{get_survey_info}()}
+\code{\link{get_survey_info}()},
+\code{\link{reduce_spanned_responses}()},
+\code{\link{span_series_request}()}
 }
 \concept{blsR-requests}
