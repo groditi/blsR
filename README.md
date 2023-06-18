@@ -42,7 +42,7 @@ all that a user will need. An API key is not required to use this
 package but users will be restricted in how many years of data can be
 retrieved per request, how many series can be included per request, and
 how many requests can be made in a day. An API Key can be obtained at:
-<https://data.bls.gov/registrationEngine/> \#\# Example
+<https://data.bls.gov/registrationEngine/> \## Example
 
 This is a basic example which shows you how to retrieve one series as a
 tibble or retrieve two series as a joined tibble.
@@ -53,7 +53,7 @@ To request a single series as a tibble:
 
 ``` r
 library(blsR)
-uer <- get_series_table('LNS14000000', NA, 2006, 2006)
+uer <- get_series_table('LNS14000000', start_year = 2006, end_year = 2006)
 
 # uer: 
 # # A tibble: 12 x 5
@@ -93,7 +93,7 @@ To request multiple series as one tibble
 
 ``` r
 get_n_series_table(
-  list('LNS14000001', 'LNS14000002'), NA, start_year = 2005, end_year=2006
+  list('LNS14000001', 'LNS14000002'), start_year = 2005, end_year=2006
   )
 # # A tibble: 24 x 4
 #     year period LNS14000001 LNS14000002
@@ -112,7 +112,6 @@ get_n_series_table(
 
 get_n_series_table(
   list(uer.men ='LNS14000001', uer.women = 'LNS14000002'),
-  NA,
   start_year = 2005, end_year=2006, tidy=TRUE
 )
 
