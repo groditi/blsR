@@ -6,8 +6,8 @@
 \usage{
 query_n_series(
   series,
-  start_year = NA,
-  end_year = NA,
+  start_year = NULL,
+  end_year = NULL,
   catalog = FALSE,
   calculations = FALSE,
   annualaverage = FALSE,

@@ -6,9 +6,9 @@
 \usage{
 get_n_series_table(
   series_ids,
-  api_key,
-  start_year = NA,
-  end_year = NA,
+  api_key = bls_get_key(),
+  start_year = NULL,
+  end_year = NULL,
   tidy = FALSE,
   parse_values = TRUE,
   ...
@@ -18,8 +18,10 @@ get_n_series_table(
 \item{series_ids}{a named list of BLS time-series IDs. If the
 list items are named then the names will be used in the returned list}
 
-\item{api_key}{a mandatory API key, available from
-\url{https://data.bls.gov/registrationEngine/}}
+\item{api_key}{Optional. An API key string. Defaults to the value returned by
+\code{\link[=bls_get_key]{bls_get_key()}}. The preferred way to provide an API key is to use
+\code{\link[=bls_set_key]{bls_set_key()}} or the \code{BLS_API_KEY} environment variable. Manually passing
+the key will be deprecated in future releases.}
 
 \item{start_year}{optional numeric 4-digit year}
 
@@ -43,7 +45,6 @@ Retrieve multiple time series in one API request and return a single tibble
 \dontrun{
 get_n_series_table(
   list(uer.men ='LNS14000001', uer.women = 'LNS14000002'),
-  'your-api-key-here',
   start_year = 2005, end_year=2006
 )
 }

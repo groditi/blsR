@@ -32,6 +32,17 @@
 #' suit individual needs and wrap those into a single call like
 #' [`get_series_table()`] does.
 #'
+#' @section API Key Management:
+#'
+#' The preferred method to set the key is to set the `BLS_API_KEY` environment
+#' variable in an `.Renviron` file. To learn more, see [`bls-api-key`].
+#'
+#'  * [`bls_has_key()`] - Check if an API key is set
+#'  * [`bls_get_key()`] - Get an API key, if set
+#'  * [`bls_set_key()`] - Set an API key for the _current session_
+#'  * [`bls_unset_key()`] - Unsset an API key for the _current session_
+#'
+#'
 #' @section Query Generators:
 #'
 #' The query generators return a list suitable for passing to [`bls_request()`].

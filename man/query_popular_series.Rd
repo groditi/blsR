@@ -4,7 +4,7 @@
 \alias{query_popular_series}
 \title{Create a query to retrieve popular series}
 \usage{
-query_popular_series(survey_id = NA)
+query_popular_series(survey_id = NULL)
 }
 \arguments{
 \item{survey_id}{string optional}

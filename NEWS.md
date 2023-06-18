@@ -1,3 +1,10 @@
+# blsR 0.5.0
+  ## New functionality
+   * Managing the API key can now be done via the `BLS_API_KEY` environment
+   variable. This can be done using a `.Renviron` file or manually by setting
+   the key with the new `bls_set_key` function. Functions which previously
+   required the argument `api_key` now default to the result of `bls_set_key`
+
 # blsR 0.4.0
 
   * Previously, the `get_n_series` documentation state that `...` was passed to

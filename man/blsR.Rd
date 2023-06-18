@@ -42,6 +42,19 @@ suit individual needs and wrap those into a single call like
 \code{\link[=get_series_table]{get_series_table()}} does.
 }
 
+\section{API Key Management}{
+
+
+The preferred method to set the key is to set the \code{BLS_API_KEY} environment
+variable in an \code{.Renviron} file. To learn more, see \code{\link{bls-api-key}}.
+\itemize{
+\item \code{\link[=bls_has_key]{bls_has_key()}} - Check if an API key is set
+\item \code{\link[=bls_get_key]{bls_get_key()}} - Get an API key, if set
+\item \code{\link[=bls_set_key]{bls_set_key()}} - Set an API key for the \emph{current session}
+\item \code{\link[=bls_unset_key]{bls_unset_key()}} - Unsset an API key for the \emph{current session}
+}
+}
+
 \section{Query Generators}{
 
 

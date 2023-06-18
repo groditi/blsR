@@ -65,12 +65,13 @@ merge_tables <- function(tables, join_by = c('year', 'period')){
   )
 
   purrr::reduce(
-    purrr::prepend(
+    append(
       purrr::imap(
         tables,
         ~dplyr::select(.x, dplyr::all_of(join_by), !!rlang::as_name(.y) := 'value')
       ),
-      list(keys=keys)
+      list(keys=keys),
+      after = 0
     ),
     dplyr::left_join,
 #    by = dplyr::all_of(join_by)

@@ -6,8 +6,8 @@
 \usage{
 get_series(
   series_id,
-  start_year = NA,
-  end_year = NA,
+  start_year = NULL,
+  end_year = NULL,
   year_limit = 10,
   span = TRUE,
   ...

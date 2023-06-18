@@ -7,9 +7,9 @@ catalog data}
 \usage{
 get_n_series(
   series_ids,
-  api_key,
-  start_year = NA,
-  end_year = NA,
+  api_key = bls_get_key(),
+  start_year = NULL,
+  end_year = NULL,
   year_limit = 20,
   span = TRUE,
   catalog = FALSE,
@@ -23,8 +23,10 @@ get_n_series(
 \item{series_ids}{a list or character vector of BLS time-series IDs. If the
 list items are named then the names will be used in the returned list}
 
-\item{api_key}{a required API key, available from
-\url{https://data.bls.gov/registrationEngine/}}
+\item{api_key}{Optional. An API key string. Defaults to the value returned by
+\code{\link[=bls_get_key]{bls_get_key()}}. The preferred way to provide an API key is to use
+\code{\link[=bls_set_key]{bls_set_key()}} or the \code{BLS_API_KEY} environment variable. Manually passing
+the key will be deprecated in future releases.}
 
 \item{start_year}{numeric 4-digit year}
 

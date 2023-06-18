@@ -20,7 +20,7 @@ tibble flattening \code{data} into rows for entries and columns for fields
 Convert a list of data entries as returned by BLS API to a table
 }
 \details{
-currently \code{data_as_table} is very similar to \code{\link[dplyr:bind]{dplyr::bind_rows()}}
+currently \code{data_as_table} is very similar to \code{\link[dplyr:bind_rows]{dplyr::bind_rows()}}
 }
 \examples{
 \dontrun{
@@ -30,6 +30,7 @@ table <- data_as_table(series$data)
 }
 \seealso{
 Other blsR-utils: 
+\code{\link{bls-api-key}},
 \code{\link{data_as_tidy_table}()},
 \code{\link{merge_tables}()},
 \code{\link{merge_tidy_tables}()},

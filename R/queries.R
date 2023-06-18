@@ -3,12 +3,12 @@
 }
 
 .build_payload <- function(
-  series=c(), start_year=NA, end_year=NA, catalog = FALSE, calculations = FALSE,
+  series=c(), start_year=NULL, end_year=NULL, catalog = FALSE, calculations = FALSE,
   annualaverage = FALSE, aspects = FALSE){
   # tell the API what we want
-  if(is.na(start_year) != is.na(end_year))
-    rlang::abort('start_year and end_year must both be specified or both be NA')
-  if(!is.na(start_year) ){
+  if(rlang::is_bare_numeric(start_year, 1) != rlang::is_bare_numeric(end_year, 1))
+    rlang::abort('start_year and end_year must both be specified or both be NULL')
+  if(rlang::is_bare_numeric(start_year, 1)){
     if(start_year > end_year)
       rlang::abort('start year can not be greater than end year')
     if( (end_year - start_year)+1 > 20 ){
@@ -22,10 +22,9 @@
 
 
   payload <- list()
-  if(length(series) > 1) payload[['seriesid']] <- series
-  if(length(series) ==  1) payload[['seriesid']] <- c(series)
-  if(!is.na(start_year)) payload[['startyear']] <- start_year
-  if(!is.na(end_year)) payload[['endyear']] <- end_year
+  if(length(series) > 0) payload[['seriesid']] <- series
+  if(rlang::is_bare_numeric(start_year)) payload[['startyear']] <- start_year
+  if(rlang::is_bare_numeric(end_year)) payload[['endyear']] <- end_year
   if(isTRUE(catalog)) payload[['catalog']] <- catalog
   if(isTRUE(calculations)) payload[['calculations']] <- calculations
   if(isTRUE(annualaverage)) payload[['annualaverage']] <- annualaverage
@@ -51,7 +50,7 @@
 #' unemployment_rate_query <- query_series('LNS14000000')
 #' unemployment_rate_query <- query_series('LNS14000000', 2005, 2010)
 #'
-query_series <- function(series_id, start_year=NA, end_year=NA){
+query_series <- function(series_id, start_year=NULL, end_year=NULL){
   #query a singular series (easy GET from JSON URI)
   api_url <- .api_uri_root()
   url_path <- c(api_url$path, 'timeseries','data', series_id)
@@ -89,7 +88,7 @@ query_series <- function(series_id, start_year=NA, end_year=NA){
 #'
 #'
 query_n_series <- function(
-  series, start_year=NA, end_year=NA, catalog = FALSE, calculations = FALSE,
+  series, start_year=NULL, end_year=NULL, catalog = FALSE, calculations = FALSE,
   annualaverage = FALSE, aspects = FALSE){
   #request multiple series and optional series-level information
 
@@ -121,11 +120,11 @@ query_n_series <- function(
 #' popular_series_query <- query_popular_series()
 #' popular_labor_force_series <- query_popular_series('LN')
 #'
-query_popular_series <- function(survey_id = NA){
+query_popular_series <- function(survey_id = NULL){
   #query for popular series (optional: from a specific survey)
   api_url <- .api_uri_root()
   url_path <- c(api_url$path, 'timeseries','popular')
-  if(!is.na(survey_id))
+  if(rlang::is_string(survey_id))
     api_url <- httr::modify_url(api_url, query = list(survey = survey_id))
 
   list(

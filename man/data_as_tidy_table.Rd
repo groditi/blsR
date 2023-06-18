@@ -32,6 +32,7 @@ table <- data_as_tidy_table(series$data)
 }
 \seealso{
 Other blsR-utils: 
+\code{\link{bls-api-key}},
 \code{\link{data_as_table}()},
 \code{\link{merge_tables}()},
 \code{\link{merge_tidy_tables}()},

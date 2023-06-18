@@ -30,6 +30,7 @@ Other blsR-requests:
 \code{\link{span_series_request}()}
 
 Other blsR-utils: 
+\code{\link{bls-api-key}},
 \code{\link{data_as_table}()},
 \code{\link{data_as_tidy_table}()},
 \code{\link{merge_tables}()},

@@ -1,13 +1,20 @@
 
 .validate_years <- function(start_year, end_year){
-  if(rlang::is_na(start_year) && rlang::is_na(end_year))
+
+  is_numeric_start <- rlang::is_bare_numeric(start_year, 1)
+  is_numeric_end <- rlang::is_bare_numeric(end_year, 1)
+
+  is_empty_start <- rlang::is_null(start_year) || rlang::is_na(start_year)
+  is_empty_end <- rlang::is_null(end_year) || rlang::is_na(end_year)
+
+  if(is_empty_start && is_empty_end)
     return(TRUE)
 
-  if(rlang::is_na(start_year) || rlang::is_na(end_year))
+  if(is_empty_start || is_empty_end)
     rlang::abort('start_year and end_year must both be provided')
-  if(!rlang::is_bare_numeric(start_year, 1))
+  if(!is_numeric_start)
     rlang::abort('start_year must be a scalar numeric')
-  if(!rlang::is_bare_numeric(end_year, 1))
+  if(!is_numeric_end)
     rlang::abort('end_year must be a scalar numeric')
   if(start_year > end_year)
     rlang::abort('end_year must be greater than or equal to start_year')
@@ -33,8 +40,10 @@
     return(series_id_values)
 
   series_id_names <- names(series_ids)
+  if(length(series_id_names) == 0)
+    return(series_id_values)
   if(length(series_id_names) != length(series_ids))
-    rlang::abort('all series_ids list elements must be named')
+    rlang::abort('none or all series_ids list elements must be named')
   if(length(series_id_names) != length(unique(series_id_names)))
     rlang::abort('series_ids names must be unique')
   if(!all(stringr::str_length(series_id_names)))
@@ -78,8 +87,11 @@
 #' series <- get_series('LNS14000001')
 #' }
 get_series <- function(
-    series_id, start_year=NA, end_year=NA, year_limit=10, span=TRUE, ...
+    series_id, start_year=NULL, end_year=NULL, year_limit=10, span=TRUE, ...
 ){
+  dots <- rlang::list2(...)
+  if(bls_has_key() || rlang::is_string(dots$api_key)) year_limit <- 20
+
   .validate_years(start_year, end_year)
   query_fn <- purrr::partial(query_series, series_id)
   if(!span){
@@ -96,8 +108,10 @@ get_series <- function(
 #'
 #' @param series_ids a list or character vector of BLS time-series IDs. If the
 #' list items are named then the names will be used in the returned list
-#' @param api_key a required API key, available from
-#'  <https://data.bls.gov/registrationEngine/>
+#' @param api_key Optional. An API key string. Defaults to the value returned by
+#' [`bls_get_key()`]. The preferred way to provide an API key is to use
+#' [`bls_set_key()`] or the `BLS_API_KEY` environment variable. Manually passing
+#' the key will be deprecated in future releases.
 #' @param start_year numeric 4-digit year
 #' @param end_year numeric 4-digit year
 #' @param year_limit optional number of years to paginate request by. Defaults
@@ -149,12 +163,12 @@ get_series <- function(
 #' uer_series <- get_n_series(series_ids, 'your-api-key-here' )
 #' }
 get_n_series <- function(
-    series_ids, api_key,
-    start_year=NA, end_year=NA, year_limit = 20, span = TRUE,
+    series_ids, api_key = bls_get_key(),
+    start_year=NULL, end_year=NULL, year_limit = 20, span = TRUE,
     catalog = FALSE, calculations = FALSE, annualaverage = FALSE, aspects = FALSE,
     ...
 ){
-  if(rlang::is_na(api_key)) year_limit <- 10
+  if(rlang::is_null(api_key)) year_limit <- 10
   .validate_years(start_year, end_year)
 
   bls_series_ids <- unlist(series_ids, use.names = F)
@@ -173,7 +187,7 @@ get_n_series <- function(
     series <- bls_request(query_fn(start_year, end_year), api_key, ...)$series
   } else{
     series <- span_series_request(
-      start_year, end_year, year_limit, query_fn, api_key, ...
+      start_year, end_year, year_limit, query_fn, api_key = api_key, ...
       )[bls_series_ids] #in theory this is necessary, in practice, why not both?
   }
 

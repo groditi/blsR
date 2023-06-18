@@ -20,6 +20,7 @@ tibble
 }
 \seealso{
 Other blsR-utils: 
+\code{\link{bls-api-key}},
 \code{\link{data_as_table}()},
 \code{\link{data_as_tidy_table}()},
 \code{\link{merge_tables}()},

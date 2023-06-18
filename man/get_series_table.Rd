@@ -6,9 +6,9 @@
 \usage{
 get_series_table(
   series_id,
-  api_key,
-  start_year = NA,
-  end_year = NA,
+  api_key = bls_get_key(),
+  start_year = NULL,
+  end_year = NULL,
   year_limit = 20,
   parse_values = TRUE,
   ...
@@ -17,8 +17,10 @@ get_series_table(
 \arguments{
 \item{series_id}{a BLS time-series ID}
 
-\item{api_key}{a mandatory API key, available from
-\url{https://data.bls.gov/registrationEngine/}}
+\item{api_key}{Optional. An API key string. Defaults to the value returned by
+\code{\link[=bls_get_key]{bls_get_key()}}. The preferred way to provide an API key is to use
+\code{\link[=bls_set_key]{bls_set_key()}} or the \code{BLS_API_KEY} environment variable. Manually passing
+the key will be deprecated in future releases.}
 
 \item{start_year}{optional numeric 4-digit year}
 

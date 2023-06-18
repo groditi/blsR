@@ -3,8 +3,10 @@
 #' Retrieve a single time series from BLS API and return a tibble
 #'
 #' @param series_id a BLS time-series ID
-#' @param api_key a mandatory API key, available from
-#'  <https://data.bls.gov/registrationEngine/>
+#' @param api_key Optional. An API key string. Defaults to the value returned by
+#' [`bls_get_key()`]. The preferred way to provide an API key is to use
+#' [`bls_set_key()`] or the `BLS_API_KEY` environment variable. Manually passing
+#' the key will be deprecated in future releases.
 #' @param start_year optional numeric 4-digit year
 #' @param end_year optional numeric 4-digit year
 #' @param year_limit optional number of years to paginate request by. Defaults
@@ -28,11 +30,11 @@
 #'
 
 get_series_table <- function(
-  series_id, api_key,
-  start_year=NA, end_year=NA, year_limit=20, parse_values=TRUE, ...
+  series_id, api_key = bls_get_key(),
+  start_year=NULL, end_year=NULL, year_limit=20, parse_values=TRUE, ...
   ){
 
-  if(is.na(api_key)) year_limit <- 10
+  if(!rlang::is_scalar_character(api_key)) year_limit <- 10
 
   series <- get_series(series_id, start_year, end_year, year_limit, api_key=api_key, ...)
   if(length(series$data) > 0)
@@ -46,8 +48,10 @@ get_series_table <- function(
 #'
 #' @param series_ids a list or character vector of BLS time-series IDs. If the
 #' list items are named then the names will be used in the returned list
-#' @param api_key a mandatory API key, available from
-#'  <https://data.bls.gov/registrationEngine/>
+#' @param api_key Optional. An API key string. Defaults to the value returned by
+#' [`bls_get_key()`]. The preferred way to provide an API key is to use
+#' [`bls_set_key()`] or the `BLS_API_KEY` environment variable. Manually passing
+#' the key will be deprecated in future releases.
 #' @param start_year optional numeric 4-digit year
 #' @param end_year optional numeric 4-digit year
 #' @param year_limit optional number of years to paginate request by. Defaults
@@ -67,21 +71,22 @@ get_series_table <- function(
 #'
 #' @examples
 #' \dontrun{
+#'
+#' blsr_set_key('your-api-key-here-xxxxxxxxxxxxxx')
+#'
 #' get_series_tables(
-#'   list(uer.men ='LNS14000001', uer.women = 'LNS14000002')),
-#'   'your-api-key-here'
+#'   list(uer.men ='LNS14000001', uer.women = 'LNS14000002')
 #' )
 #' get_series_tables(
 #'   list(uer.men ='LNS14000001', uer.women = 'LNS14000002'),
-#'   'your-api-key-here',
 #'   2005,2006
 #' )
 #' }
 #'
 
 get_series_tables <- function(
-  series_ids, api_key,
-  start_year=NA, end_year=NA, year_limit=20, parse_values=TRUE, ...
+  series_ids, api_key = bls_get_key(),
+  start_year=NULL, end_year=NULL, year_limit=20, parse_values=TRUE, ...
 ){
 
   series <- get_n_series(series_ids, api_key, start_year, end_year, year_limit, ...)
@@ -97,8 +102,10 @@ get_series_tables <- function(
 #'
 #' @param series_ids a named list of BLS time-series IDs. If the
 #' list items are named then the names will be used in the returned list
-#' @param api_key a mandatory API key, available from
-#'  <https://data.bls.gov/registrationEngine/>
+#' @param api_key Optional. An API key string. Defaults to the value returned by
+#' [`bls_get_key()`]. The preferred way to provide an API key is to use
+#' [`bls_set_key()`] or the `BLS_API_KEY` environment variable. Manually passing
+#' the key will be deprecated in future releases.
 #' @param start_year optional numeric 4-digit year
 #' @param end_year optional numeric 4-digit year
 #' @param tidy optional boolean. Return will use [`tidy_periods()`] if true
@@ -117,14 +124,13 @@ get_series_tables <- function(
 #' \dontrun{
 #' get_n_series_table(
 #'   list(uer.men ='LNS14000001', uer.women = 'LNS14000002'),
-#'   'your-api-key-here',
 #'   start_year = 2005, end_year=2006
 #' )
 #' }
 #'
 get_n_series_table <- function(
-  series_ids, api_key,
-  start_year=NA, end_year=NA, tidy=FALSE, parse_values=TRUE, ...
+  series_ids, api_key = bls_get_key(),
+  start_year=NULL, end_year=NULL, tidy=FALSE, parse_values=TRUE, ...
 ){
   tables <- get_series_tables(
     series_ids = series_ids,

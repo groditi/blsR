@@ -4,7 +4,7 @@
 \alias{query_series}
 \title{Create a query for a single time series}
 \usage{
-query_series(series_id, start_year = NA, end_year = NA)
+query_series(series_id, start_year = NULL, end_year = NULL)
 }
 \arguments{
 \item{series_id}{BLS series ID}
