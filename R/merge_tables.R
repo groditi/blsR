@@ -143,9 +143,9 @@ tidy_periods <- function(table){
 #' Convert a list of data entries as returned by BLS API to a table
 #'
 #' @param data a list of individual datum entries as returned by the API
-#' @param parse_values optional boolean. If set to `true` (default) it will
+#' @param parse_values optional boolean. If set to `TRUE` (default) it will
 #' attempt to parse the contents of `value` and cast numeric strings as numeric
-#' values. If set to `false` it will retain `value` as a column of strings.
+#' values. If set to `FALSE` it will retain `value` as a column of strings.
 #'
 #' @details currently `data_as_table` is very similar to [dplyr::bind_rows()]
 #'
@@ -174,11 +174,7 @@ data_as_table <- function(data, parse_values=TRUE){
 
 #' Convert a list of data entries as returned by BLS API to a table
 #'
-#' @param data a list of individual datum entries as returned the API
-#' @param parse_values optional boolean. If set to `true` (default) it will
-#' attempt to parse the contents of `value` and cast numeric strings as numeric
-#' values. If set to `false` it will retain `value` as a column of strings.
-#'
+#' @inheritParams data_as_table
 #' @details An extension of [`data_as_table`] that replaces the BLS period
 #' format by removing columns `period` and `periodName` and adding `month` or
 #' `quarter` where appropriate.
@@ -216,8 +212,8 @@ data_as_tidy_table <- function(data, parse_values=TRUE){
 #' @param table a table of results
 #' @param index_function optional closure. The closure argument is the `table`
 #' and it should return a vector of values compatible with a `zoo` index. The
-#' default function will return a vector of [`zoo::yearmon`] for monthly series and
-#' [`zoo::yearqtr`] for quarterly or annual series.
+#' default function will return a vector of [`zoo::yearmon()`] for monthly series and
+#' [`zoo::yearqtr()`] for quarterly or annual series.
 #'
 #' @details A utility function to easily convert retrieved BLS series into
 #' `zoo` or `xts` objects.

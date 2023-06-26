@@ -48,13 +48,25 @@ test_that('live get_series_table request tests', {
 
 test_that('live get_series_tables request tests', {
   check_test_key()
-  api_key <- bls_get_key()
   series_ids <- c('LNS14000001','LNS14000002')
-  t1 <- get_series_tables(series_ids, api_key, 1968, 1988)
+  t1 <- get_series_tables(series_ids, start_year = 1968, end_year = 1988)
   expect_setequal(names(t1), series_ids)
   years <- as.numeric(dplyr::pull(t1[[1]], 'year'))
   expect_equal(min(years), 1968)
   expect_equal(max(years), 1988)
   expect_equal(length(years), 252)
+}
+)
+
+
+test_that('too many items fails', {
+  has_key <- bls_has_key()
+  old_key <- bls_get_key()
+  bls_unset_key()
+
+  series_ids <-  stringi::stri_rand_strings(26, 10)
+  expect_error(get_series_tables(series_ids, api_key, 1968, 1988))
+
+  if(has_key) bls_set_key(old_key)
 }
 )

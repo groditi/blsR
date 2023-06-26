@@ -1,11 +1,7 @@
 
 #' Break up a long request into multiple API calls
 #'
-#' @param start_year numeric
-#' @param end_year numeric
-#' @param year_limit numeric
-#' @param query_fn a function that takes two arguments, `start_year` and
-#' `end_year` and returns a query (see [`purrr::partial()`])
+#' @inheritParams span_request_queries
 #' @param ... additional arguments to pass to  [`bls_request()`]
 #'
 #' @return a list of API responses (what comes back from bls_re)
@@ -26,9 +22,8 @@ span_series_request <- function(start_year, end_year, year_limit, query_fn, ...)
 
 #' Generate multiple queries that don't exceed a year limit
 #'
-#' @param start_year numeric
-#' @param end_year numeric
-#' @param year_limit numeric
+#' @inheritParams query_series
+#' @param year_limit positive integer
 #' @param query_fn a function or closure that takes two arguments, `start_year`
 #' and `end_year`, and returns a query (see [`purrr::partial()`])
 #'

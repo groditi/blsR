@@ -52,18 +52,27 @@
   return(series_id_names)
 }
 
+.span_series_ids <- function(series_ids, series_limit){
+  series_index <- c(1:length(series_ids))
+  buckets <- split(series_index, ceiling(seq_along(series_index)/series_limit))
+  id_buckets <- lapply(buckets, function(x) series_ids[x])
+  names(id_buckets) <- NULL
+  id_buckets
+}
 
 #' Create and execute query for a single time series
 #'
-#' @param series_id BLS series ID
-#' @param start_year numeric 4-digit year
-#' @param end_year numeric 4-digit year
-#' @param year_limit optional number of years to paginate request by. Defaults
-#' to 10, the API request cap when using no API key. Requests made with an API
-#' key, which can be provided in `...`, are capped to 20 years.
+#' @inheritParams query_series
+#' @param year_limit optional number of years to paginate request by. If not
+#' explicitly set, it will be set to 10 or 20 depending on if an `api_key` is
+#' available
 #' @param span when set to `TRUE`, requests where the number of years between
 #'   `start_year` and `end_year` exceed `year_limit` will be performed as
 #'   multiple requests automatically
+#' @param api_key Optional. An API key string. Defaults to the value returned by
+#' [`bls_get_key()`]. The preferred way to provide an API key is to use
+#' [`bls_set_key()`] or the `BLS_API_KEY` environment variable. Manually passing
+#' the key will be deprecated in future releases.
 #' @param ... additional arguments to pass to [`bls_request()`]
 #'
 #' @return a single series result, in list form. The resulting list will have
@@ -87,10 +96,12 @@
 #' series <- get_series('LNS14000001')
 #' }
 get_series <- function(
-    series_id, start_year=NULL, end_year=NULL, year_limit=10, span=TRUE, ...
+    series_id, start_year=NULL, end_year=NULL, year_limit=NULL, span=TRUE,
+    api_key = bls_get_key(), ...
 ){
-  dots <- rlang::list2(...)
-  if(bls_has_key() || rlang::is_string(dots$api_key)) year_limit <- 20
+  if(!rlang::is_bare_numeric(year_limit)){
+    year_limit <- ifelse(rlang::is_null(api_key), 10, 20)
+  }
 
   .validate_years(start_year, end_year)
   query_fn <- purrr::partial(query_series, series_id)
@@ -107,38 +118,9 @@ get_series <- function(
 #' catalog data
 #'
 #' @param series_ids a list or character vector of BLS time-series IDs. If the
-#' list items are named then the names will be used in the returned list
-#' @param api_key Optional. An API key string. Defaults to the value returned by
-#' [`bls_get_key()`]. The preferred way to provide an API key is to use
-#' [`bls_set_key()`] or the `BLS_API_KEY` environment variable. Manually passing
-#' the key will be deprecated in future releases.
-#' @param start_year numeric 4-digit year
-#' @param end_year numeric 4-digit year
-#' @param year_limit optional number of years to paginate request by. Defaults
-#' to 20, the API request cap when using API key. Requests made without an API
-#' key are capped to 10 years.
-#' @param span when set to `TRUE`, requests where the number of years between
-#'   `start_year` and `end_year` exceed `year_limit` will be performed as
-#'   multiple requests automatically
-#' @param catalog boolean. If set to `TRUE`, element item in the list returned
-#'   may include a named item `catalog`, a named list containing descriptive
-#'   information about the series. Not all series have a catalog entry
-#'   available.
-#' @param calculations boolean. If set to `TRUE`, each element in the `data`
-#'   list for each series returned may include an additional named element
-#'   `calculations`, a named list containing two items, `net_changes` and
-#'   `pct_changes`, each of them a named list which may include items `1`, `3`,
-#'   `6`, `12` which represent 1, 3, 6, and 12 month net changes and percent
-#'   changes respectively. Not all data series will have enough data points to
-#'   include these calculations.
-#' @param annualaverage boolean. If set to `TRUE`, each `data` list may include
-#' an additional element for a an annual average of the time series, which is
-#' usually presented as month 13 in monthly data. Not all data series
-#' support this feature.
-#' @param aspects boolean. If set to `TRUE`, each item in the `data` list
-#' for each series returned may include an additional named element `aspects`,
-#' which will be a named list. Not all data series support this feature.
-#' @param ... additional arguments to pass to [`bls_request()`]
+#' items are named then the names will be used in the returned list
+#' @inheritParams query_n_series
+#' @inheritParams get_series
 #'
 #' @return a list of series results. Each element of the returned list is
 #' a named list guaranteed to have two items, `SeriesID` and `data` and
@@ -164,12 +146,52 @@ get_series <- function(
 #' }
 get_n_series <- function(
     series_ids, api_key = bls_get_key(),
-    start_year=NULL, end_year=NULL, year_limit = 20, span = TRUE,
+    start_year=NULL, end_year=NULL, year_limit = NULL, span = TRUE,
     catalog = FALSE, calculations = FALSE, annualaverage = FALSE, aspects = FALSE,
+    series_limit = NULL,
     ...
 ){
-  if(rlang::is_null(api_key)) year_limit <- 10
+
+  has_api_key <- !rlang::is_null(api_key)
+  series_limit <- ifelse(has_api_key, 50, 25)
+  if(rlang::is_null(year_limit) || rlang::is_na(year_limit)){
+    year_limit <- ifelse(has_api_key, 20, 10)
+  }
+
   .validate_years(start_year, end_year)
+
+  series_length <- length(series_ids)
+  if(series_length > series_limit){
+    if(!isTRUE(span)){
+      template <- paste(
+        'argument series_ids length of %i exceeds maximum of %i.',
+        'To request more than %i series in one call, use `span=TRUE`'
+      )
+      rlang::abort(sprintf(template, series_length, series_limit, series_limit))
+    }
+
+    span_buckets <- .span_series_ids(series_ids, series_limit)
+    span_call <- function(spanned_ids, ...){
+      get_n_series(
+        series_ids = spanned_ids,
+        api_key = api_key,
+        start_year = start_year,
+        end_year = end_year,
+        year_limit = year_limit,
+        span = span,
+        catalog = catalog,
+        calculations = calculations,
+        annualaverage = annualaverage,
+        aspects = aspects,
+        series_limit = series_limit,
+        ...
+      )
+    }
+
+    spanned_results <- lapply(span_buckets, span_call, ...)
+    return(purrr::reduce(spanned_results, c))
+  }
+
 
   bls_series_ids <- unlist(series_ids, use.names = F)
   series_aliases <- .series_id_names(series_ids)
@@ -183,12 +205,14 @@ get_n_series <- function(
     aspects = aspects
   )
 
-  if(rlang::is_na(start_year) || rlang::is_na(end_year) || !span){
-    series <- bls_request(query_fn(start_year, end_year), api_key, ...)$series
+  if(rlang::is_na(start_year) || rlang::is_null(start_year) || !isTRUE(span)){
+    query <-  query_fn(start_year = start_year, end_year = end_year)
+    response <- bls_request(query, api_key = api_key, ...)
+    series <- response$series
   } else{
     series <- span_series_request(
       start_year, end_year, year_limit, query_fn, api_key = api_key, ...
-      )[bls_series_ids] #in theory this is necessary, in practice, why not both?
+      )[bls_series_ids] #to ensure correct order
   }
 
   return(purrr::set_names(series, series_aliases))
@@ -197,8 +221,8 @@ get_n_series <- function(
 
 #' Create and execute a query to retrieve popular series
 #'
-#' @param survey_id optional survey abbreviation
-#' @param ... additional arguments to pass to [`bls_request()`]
+#' @inheritParams query_popular_series
+#' @inheritParams get_series
 #'
 #' @return a character vector of series IDs
 #'
@@ -208,14 +232,14 @@ get_n_series <- function(
 #'
 #' @export
 #'
-get_popular_series <- function(survey_id=NA, ...){
+get_popular_series <- function(survey_id=NULL, ...){
   results <- bls_request(query_popular_series(survey_id = survey_id), ...)
   return(sapply(results$series, function(x) x$seriesID))
 }
 
 #' Create and execute a query to retrieve all surveys
 #'
-#' @param ... additional arguments to pass to [`bls_request()`]
+#' @inheritParams get_series
 #'
 #' @return a table with a survey_abbreviation and survey_name columns
 #'
@@ -232,8 +256,8 @@ get_all_surveys <- function(...){
 
 #' Create and execute a query to retrieve information about a survey
 #'
-#' @param survey_id survey abbreviation
-#' @param ... additional arguments to pass to [`bls_request()`]
+#' @inheritParams query_survey_info
+#' @inheritParams get_series
 #'
 #' @return a list of survey information
 #'
@@ -250,8 +274,8 @@ get_survey_info <- function(survey_id, ...){
 
 #' Create and execute a query to retrieve the latest observation for a series
 #'
-#' @param survey_id BLS series ID
-#' @param ... additional arguments to pass to [`bls_request()`]
+#' @inheritParams query_latest_observation
+#' @inheritParams get_series
 #'
 #' @return a datum in the form of a list
 #'
@@ -261,7 +285,7 @@ get_survey_info <- function(survey_id, ...){
 #'
 #' @export
 #'
-get_latest_observation <- function(survey_id, ...){
-  results <- bls_request(query_latest_observation(survey_id), ...)
+get_latest_observation <- function(series_id, ...){
+  results <- bls_request(query_latest_observation(series_id), ...)
   return(results$series[[1]]$data[[1]])
 }

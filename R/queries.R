@@ -35,9 +35,10 @@
 
 #' Create a query for a single time series
 #'
-#' @param series_id BLS series ID
-#' @param start_year numeric 4-digit year
-#' @param end_year numeric 4-digit year
+#' @param series_id Character scalar BLS series ID
+#' @param start_year,end_year numeric 4-digit years. While optional, they are
+#' strongly recommended. If one is provided, the other is mandatory. `end_year`
+#' must be greater than `start_year`
 #'
 #' @return list of query parameters
 #'
@@ -65,13 +66,26 @@ query_series <- function(series_id, start_year=NULL, end_year=NULL){
 
 #' Create a query to retrieve one or more time series and their catalog data
 #'
-#' @param series vector of BLS series IDs
-#' @param start_year numeric 4-digit year
-#' @param end_year numeric 4-digit year
-#' @param catalog boolean
-#' @param calculations boolean
-#' @param annualaverage boolean
-#' @param aspects boolean
+#' @inheritParams query_series
+#' @param series_ids Character vector of BLS series IDs
+#' @param catalog boolean. If set to `TRUE`, element item in the list returned
+#'   may include a named item `catalog`, a named list containing descriptive
+#'   information about the series. Not all series have a catalog entry
+#'   available.
+#' @param calculations boolean. If set to `TRUE`, each element in the `data`
+#'   list for each series returned may include an additional named element
+#'   `calculations`, a named list containing two items, `net_changes` and
+#'   `pct_changes`, each of them a named list which may include items `1`, `3`,
+#'   `6`, `12` which represent 1, 3, 6, and 12 month net changes and percent
+#'   changes respectively. Not all data series will have enough data points to
+#'   include these calculations.
+#' @param annualaverage boolean. If set to `TRUE`, each `data` list may include
+#' an additional element for a an annual average of the time series, which is
+#' usually presented as month 13 in monthly data. Not all data series
+#' support this feature.
+#' @param aspects boolean. If set to `TRUE`, each item in the `data` list
+#' for each series returned may include an additional named element `aspects`,
+#' which will be a named list. Not all data series support this feature.
 #'
 #' @return list of query parameters
 #'
@@ -88,14 +102,14 @@ query_series <- function(series_id, start_year=NULL, end_year=NULL){
 #'
 #'
 query_n_series <- function(
-  series, start_year=NULL, end_year=NULL, catalog = FALSE, calculations = FALSE,
+  series_ids, start_year=NULL, end_year=NULL, catalog = FALSE, calculations = FALSE,
   annualaverage = FALSE, aspects = FALSE){
   #request multiple series and optional series-level information
 
   api_url <- .api_uri_root()
   url_path <- c(api_url$path, 'timeseries','data')
   payload <- .build_payload(
-    series, start_year, end_year, catalog, calculations, annualaverage, aspects
+    series_ids, start_year, end_year, catalog, calculations, annualaverage, aspects
   )
 
   list(
@@ -108,7 +122,7 @@ query_n_series <- function(
 
 #' Create a query to retrieve popular series
 #'
-#' @param survey_id string optional
+#' @param survey_id BLS survey abbreviation (two letter code)
 #'
 #' @return list of query parameters
 #'

@@ -77,7 +77,7 @@ sample_json_response2 <- '
 sample_response <- jsonlite::fromJSON(sample_json_response, simplifyVector = FALSE)
 sample_response2 <- jsonlite::fromJSON(sample_json_response2, simplifyVector = FALSE)
 
-test_that("spanning queries works", {
+test_that("time spanning queries works", {
   series_ids <- c('LNS14000001','LNS14000002')
   query_fn <- purrr::partial(query_n_series, series_ids, ...=, catalog=TRUE)
   expect_silent(queries <- span_request_queries(2013, 2015, 5, query_fn))
@@ -96,7 +96,7 @@ test_that("spanning queries works", {
 
 })
 
-test_that("reducing responses works", {
+test_that("reducing time spanned responses works", {
   responses <- list(sample_response, sample_response2)
   series <- reduce_spanned_responses(responses)
   expect_equal(names(series), c('LNS14000002','LNS14000001'))
@@ -105,4 +105,41 @@ test_that("reducing responses works", {
   expect_equal(length(series[[1]]$data), 24)
   expect_equal(length(series[[1]]$data), length(series[[2]]$data))
   expect_equal(length(series[[1]]$data), length(series[[2]]$data))
+})
+
+test_that("series spanning buckets", {
+  series_ids <- stringi::stri_rand_strings(54, 10)
+  series_names <- unique(stringi::stri_rand_strings(100, 4))[c(1:54)]
+  named_series <- purrr::set_names(series_ids, series_names)
+  named_series_list <- as.list(named_series)
+
+  expect_equal(
+    vapply(blsR:::.span_series_ids(series_ids, 15), length, integer(1)),
+    c(15, 15, 15, 9)
+  )
+
+  expect_equal(
+    vapply(blsR:::.span_series_ids(named_series, 12), length, integer(1)),
+    c(12, 12, 12, 12, 6)
+  )
+
+  expect_equal(
+    purrr::reduce(blsR:::.span_series_ids(named_series, 12), c),
+    named_series
+  )
+
+  expect_equal(
+    purrr::reduce(blsR:::.span_series_ids(named_series_list, 12), c),
+    named_series_list
+  )
+
+  expect_equal(
+    blsR:::.span_series_ids(named_series, 55)[[1]],
+    named_series
+  )
+
+  expect_equal(
+    blsR:::.span_series_ids(named_series_list, 55)[[1]],
+    named_series_list
+  )
 })
