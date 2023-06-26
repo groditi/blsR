@@ -7,11 +7,11 @@
 span_request_queries(start_year, end_year, year_limit, query_fn)
 }
 \arguments{
-\item{start_year}{numeric}
+\item{start_year, end_year}{numeric 4-digit years. While optional, they are
+strongly recommended. If one is provided, the other is mandatory. \code{end_year}
+must be greater than \code{start_year}}
 
-\item{end_year}{numeric}
-
-\item{year_limit}{numeric}
+\item{year_limit}{positive integer}
 
 \item{query_fn}{a function or closure that takes two arguments, \code{start_year}
 and \code{end_year}, and returns a query (see \code{\link[purrr:partial]{purrr::partial()}})}

@@ -7,7 +7,7 @@
 get_survey_info(survey_id, ...)
 }
 \arguments{
-\item{survey_id}{survey abbreviation}
+\item{survey_id}{BLS survey abbreviation (two letter code)}
 
 \item{...}{additional arguments to pass to \code{\link[=bls_request]{bls_request()}}}
 }

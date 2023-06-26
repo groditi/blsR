@@ -7,7 +7,7 @@
 query_popular_series(survey_id = NULL)
 }
 \arguments{
-\item{survey_id}{string optional}
+\item{survey_id}{BLS survey abbreviation (two letter code)}
 }
 \value{
 list of query parameters

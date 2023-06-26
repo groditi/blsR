@@ -5,7 +5,7 @@
 \title{Create a query to retrieve one or more time series and their catalog data}
 \usage{
 query_n_series(
-  series,
+  series_ids,
   start_year = NULL,
   end_year = NULL,
   catalog = FALSE,
@@ -15,19 +15,33 @@ query_n_series(
 )
 }
 \arguments{
-\item{series}{vector of BLS series IDs}
+\item{series_ids}{Character vector of BLS series IDs}
 
-\item{start_year}{numeric 4-digit year}
+\item{start_year, end_year}{numeric 4-digit years. While optional, they are
+strongly recommended. If one is provided, the other is mandatory. \code{end_year}
+must be greater than \code{start_year}}
 
-\item{end_year}{numeric 4-digit year}
+\item{catalog}{boolean. If set to \code{TRUE}, element item in the list returned
+may include a named item \code{catalog}, a named list containing descriptive
+information about the series. Not all series have a catalog entry
+available.}
 
-\item{catalog}{boolean}
+\item{calculations}{boolean. If set to \code{TRUE}, each element in the \code{data}
+list for each series returned may include an additional named element
+\code{calculations}, a named list containing two items, \code{net_changes} and
+\code{pct_changes}, each of them a named list which may include items \code{1}, \code{3},
+\code{6}, \code{12} which represent 1, 3, 6, and 12 month net changes and percent
+changes respectively. Not all data series will have enough data points to
+include these calculations.}
 
-\item{calculations}{boolean}
+\item{annualaverage}{boolean. If set to \code{TRUE}, each \code{data} list may include
+an additional element for a an annual average of the time series, which is
+usually presented as month 13 in monthly data. Not all data series
+support this feature.}
 
-\item{annualaverage}{boolean}
-
-\item{aspects}{boolean}
+\item{aspects}{boolean. If set to \code{TRUE}, each item in the \code{data} list
+for each series returned may include an additional named element \code{aspects},
+which will be a named list. Not all data series support this feature.}
 }
 \value{
 list of query parameters

@@ -8,25 +8,31 @@ get_series(
   series_id,
   start_year = NULL,
   end_year = NULL,
-  year_limit = 10,
+  year_limit = NULL,
   span = TRUE,
+  api_key = bls_get_key(),
   ...
 )
 }
 \arguments{
-\item{series_id}{BLS series ID}
+\item{series_id}{Character scalar BLS series ID}
 
-\item{start_year}{numeric 4-digit year}
+\item{start_year, end_year}{numeric 4-digit years. While optional, they are
+strongly recommended. If one is provided, the other is mandatory. \code{end_year}
+must be greater than \code{start_year}}
 
-\item{end_year}{numeric 4-digit year}
-
-\item{year_limit}{optional number of years to paginate request by. Defaults
-to 10, the API request cap when using no API key. Requests made with an API
-key, which can be provided in \code{...}, are capped to 20 years.}
+\item{year_limit}{optional number of years to paginate request by. If not
+explicitly set, it will be set to 10 or 20 depending on if an \code{api_key} is
+available}
 
 \item{span}{when set to \code{TRUE}, requests where the number of years between
 \code{start_year} and \code{end_year} exceed \code{year_limit} will be performed as
 multiple requests automatically}
+
+\item{api_key}{Optional. An API key string. Defaults to the value returned by
+\code{\link[=bls_get_key]{bls_get_key()}}. The preferred way to provide an API key is to use
+\code{\link[=bls_set_key]{bls_set_key()}} or the \code{BLS_API_KEY} environment variable. Manually passing
+the key will be deprecated in future releases.}
 
 \item{...}{additional arguments to pass to \code{\link[=bls_request]{bls_request()}}}
 }

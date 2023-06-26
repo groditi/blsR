@@ -7,11 +7,11 @@
 query_series(series_id, start_year = NULL, end_year = NULL)
 }
 \arguments{
-\item{series_id}{BLS series ID}
+\item{series_id}{Character scalar BLS series ID}
 
-\item{start_year}{numeric 4-digit year}
-
-\item{end_year}{numeric 4-digit year}
+\item{start_year, end_year}{numeric 4-digit years. While optional, they are
+strongly recommended. If one is provided, the other is mandatory. \code{end_year}
+must be greater than \code{start_year}}
 }
 \value{
 list of query parameters

@@ -11,8 +11,8 @@ tidy_table_as_zoo(table, index_function = .zoo_index_function)
 
 \item{index_function}{optional closure. The closure argument is the \code{table}
 and it should return a vector of values compatible with a \code{zoo} index. The
-default function will return a vector of \code{\link[zoo:yearmon]{zoo::yearmon}} for monthly series and
-\code{\link[zoo:yearqtr]{zoo::yearqtr}} for quarterly or annual series.}
+default function will return a vector of \code{\link[zoo:yearmon]{zoo::yearmon()}} for monthly series and
+\code{\link[zoo:yearqtr]{zoo::yearqtr()}} for quarterly or annual series.}
 }
 \value{
 a \code{zoo}object

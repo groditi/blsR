@@ -2,38 +2,38 @@
 % Please edit documentation in R/get_series_table.R
 \name{get_series_tables}
 \alias{get_series_tables}
-\title{Retrieve multiple time series in one API request and return a list of tibbles}
+\title{Retrieve multiple time series as in one API request as tibbles}
 \usage{
 get_series_tables(
   series_ids,
   api_key = bls_get_key(),
   start_year = NULL,
   end_year = NULL,
-  year_limit = 20,
+  year_limit = NULL,
   parse_values = TRUE,
   ...
 )
 }
 \arguments{
 \item{series_ids}{a list or character vector of BLS time-series IDs. If the
-list items are named then the names will be used in the returned list}
+items are named then the names will be used in the returned list}
 
 \item{api_key}{Optional. An API key string. Defaults to the value returned by
 \code{\link[=bls_get_key]{bls_get_key()}}. The preferred way to provide an API key is to use
 \code{\link[=bls_set_key]{bls_set_key()}} or the \code{BLS_API_KEY} environment variable. Manually passing
 the key will be deprecated in future releases.}
 
-\item{start_year}{optional numeric 4-digit year}
+\item{start_year, end_year}{numeric 4-digit years. While optional, they are
+strongly recommended. If one is provided, the other is mandatory. \code{end_year}
+must be greater than \code{start_year}}
 
-\item{end_year}{optional numeric 4-digit year}
+\item{year_limit}{optional number of years to paginate request by. If not
+explicitly set, it will be set to 10 or 20 depending on if an \code{api_key} is
+available}
 
-\item{year_limit}{optional number of years to paginate request by. Defaults
-to 20, the API request cap when using API key. Requests made without an API
-key are capped to 10 years.}
-
-\item{parse_values}{optional boolean. If set to \code{true} (default) it will
+\item{parse_values}{optional boolean. If set to \code{TRUE} (default) it will
 attempt to parse the contents of \code{value} and cast numeric strings as numeric
-values. If set to \code{false} it will keep return a \code{value} column of strings.}
+values. If set to \code{FALSE} it will retain \code{value} as a column of strings.}
 
 \item{...}{additional arguments to pass to \code{\link{get_n_series}}}
 }
@@ -42,7 +42,7 @@ a list of tibbles. Series requests which return observations will be
 a tibble. Series with no observations will be \code{NA}
 }
 \description{
-Retrieve multiple time series in one API request and return a list of tibbles
+Retrieve multiple time series as in one API request as tibbles
 }
 \examples{
 \dontrun{

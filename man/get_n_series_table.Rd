@@ -15,23 +15,23 @@ get_n_series_table(
 )
 }
 \arguments{
-\item{series_ids}{a named list of BLS time-series IDs. If the
-list items are named then the names will be used in the returned list}
+\item{series_ids}{a list or character vector of BLS time-series IDs. If the
+items are named then the names will be used in the returned list}
 
 \item{api_key}{Optional. An API key string. Defaults to the value returned by
 \code{\link[=bls_get_key]{bls_get_key()}}. The preferred way to provide an API key is to use
 \code{\link[=bls_set_key]{bls_set_key()}} or the \code{BLS_API_KEY} environment variable. Manually passing
 the key will be deprecated in future releases.}
 
-\item{start_year}{optional numeric 4-digit year}
-
-\item{end_year}{optional numeric 4-digit year}
+\item{start_year, end_year}{numeric 4-digit years. While optional, they are
+strongly recommended. If one is provided, the other is mandatory. \code{end_year}
+must be greater than \code{start_year}}
 
 \item{tidy}{optional boolean. Return will use \code{\link[=tidy_periods]{tidy_periods()}} if true}
 
-\item{parse_values}{optional boolean. If set to \code{true} (default) it will
-attempt to parse the values of requested data series and cast numeric strings
-as numeric values. If set to \code{false} it will retain them as strings.}
+\item{parse_values}{optional boolean. If set to \code{TRUE} (default) it will
+attempt to parse the contents of \code{value} and cast numeric strings as numeric
+values. If set to \code{FALSE} it will retain \code{value} as a column of strings.}
 
 \item{...}{additional arguments to pass to \code{\link{get_series_tables}}}
 }

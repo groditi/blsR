@@ -4,10 +4,10 @@
 \alias{get_latest_observation}
 \title{Create and execute a query to retrieve the latest observation for a series}
 \usage{
-get_latest_observation(survey_id, ...)
+get_latest_observation(series_id, ...)
 }
 \arguments{
-\item{survey_id}{BLS series ID}
+\item{series_id}{BLS series ID}
 
 \item{...}{additional arguments to pass to \code{\link[=bls_request]{bls_request()}}}
 }

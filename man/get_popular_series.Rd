@@ -4,10 +4,10 @@
 \alias{get_popular_series}
 \title{Create and execute a query to retrieve popular series}
 \usage{
-get_popular_series(survey_id = NA, ...)
+get_popular_series(survey_id = NULL, ...)
 }
 \arguments{
-\item{survey_id}{optional survey abbreviation}
+\item{survey_id}{BLS survey abbreviation (two letter code)}
 
 \item{...}{additional arguments to pass to \code{\link[=bls_request]{bls_request()}}}
 }
