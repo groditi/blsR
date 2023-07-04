@@ -63,6 +63,9 @@ support this feature.}
 for each series returned may include an additional named element \code{aspects},
 which will be a named list. Not all data series support this feature.}
 
+\item{series_limit}{Maximum number of series to request in one API call
+when \code{span} is set to \code{TRUE}.}
+
 \item{...}{additional arguments to pass to \code{\link[=bls_request]{bls_request()}}}
 }
 \value{

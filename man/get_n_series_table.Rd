@@ -9,6 +9,7 @@ get_n_series_table(
   api_key = bls_get_key(),
   start_year = NULL,
   end_year = NULL,
+  year_limit = NULL,
   tidy = FALSE,
   parse_values = TRUE,
   ...
@@ -27,13 +28,25 @@ the key will be deprecated in future releases.}
 strongly recommended. If one is provided, the other is mandatory. \code{end_year}
 must be greater than \code{start_year}}
 
+\item{year_limit}{optional number of years to paginate request by. If not
+explicitly set, it will be set to 10 or 20 depending on if an \code{api_key} is
+available}
+
 \item{tidy}{optional boolean. Return will use \code{\link[=tidy_periods]{tidy_periods()}} if true}
 
 \item{parse_values}{optional boolean. If set to \code{TRUE} (default) it will
 attempt to parse the contents of \code{value} and cast numeric strings as numeric
 values. If set to \code{FALSE} it will retain \code{value} as a column of strings.}
 
-\item{...}{additional arguments to pass to \code{\link{get_series_tables}}}
+\item{...}{
+  Arguments passed on to \code{\link[=get_n_series]{get_n_series}}
+  \describe{
+    \item{\code{series_limit}}{Maximum number of series to request in one API call
+when \code{span} is set to \code{TRUE}.}
+    \item{\code{span}}{when set to \code{TRUE}, requests where the number of years between
+\code{start_year} and \code{end_year} exceed \code{year_limit} will be performed as
+multiple requests automatically}
+  }}
 }
 \value{
 a tibble of multiple merged time series

@@ -35,6 +35,7 @@ get_series_table <- function(
 #'
 #' @inheritParams get_n_series
 #' @inheritParams get_series_table
+#' @inheritDotParams get_n_series series_limit span
 #' @param ... additional arguments to pass to [`get_n_series`]
 #'
 #' @return a list of tibbles. Series requests which return observations will be
@@ -77,6 +78,7 @@ get_series_tables <- function(
 #'
 #' @inheritParams get_series_tables
 #' @param tidy optional boolean. Return will use [`tidy_periods()`] if true
+#' @inheritDotParams get_n_series series_limit span
 #' @param ... additional arguments to pass to [`get_series_tables`]
 #'
 #' @return a tibble of multiple merged time series
@@ -95,13 +97,15 @@ get_series_tables <- function(
 #'
 get_n_series_table <- function(
   series_ids, api_key = bls_get_key(),
-  start_year=NULL, end_year=NULL, tidy=FALSE, parse_values=TRUE, ...
+  start_year=NULL, end_year=NULL, year_limit=NULL,
+  tidy=FALSE, parse_values=TRUE, ...
 ){
   tables <- get_series_tables(
     series_ids = series_ids,
     api_key = api_key,
     start_year = start_year,
     end_year = end_year,
+    year_limit = year_limit,
     parse_values = parse_values,
     ...
   )

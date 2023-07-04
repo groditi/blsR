@@ -121,6 +121,8 @@ get_series <- function(
 #' items are named then the names will be used in the returned list
 #' @inheritParams query_n_series
 #' @inheritParams get_series
+#' @param series_limit Maximum number of series to request in one API call
+#' when `span` is set to `TRUE`.
 #'
 #' @return a list of series results. Each element of the returned list is
 #' a named list guaranteed to have two items, `SeriesID` and `data` and

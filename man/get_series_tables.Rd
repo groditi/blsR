@@ -35,7 +35,15 @@ available}
 attempt to parse the contents of \code{value} and cast numeric strings as numeric
 values. If set to \code{FALSE} it will retain \code{value} as a column of strings.}
 
-\item{...}{additional arguments to pass to \code{\link{get_n_series}}}
+\item{...}{
+  Arguments passed on to \code{\link[=get_n_series]{get_n_series}}
+  \describe{
+    \item{\code{series_limit}}{Maximum number of series to request in one API call
+when \code{span} is set to \code{TRUE}.}
+    \item{\code{span}}{when set to \code{TRUE}, requests where the number of years between
+\code{start_year} and \code{end_year} exceed \code{year_limit} will be performed as
+multiple requests automatically}
+  }}
 }
 \value{
 a list of tibbles. Series requests which return observations will be
