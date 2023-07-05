@@ -1,9 +1,22 @@
+# blsR (development version)
+
 # blsR 0.5.0
   ## New functionality
    * Managing the API key can now be done via the `BLS_API_KEY` environment
    variable. This can be done using a `.Renviron` file or manually by setting
    the key with the new `bls_set_key` function. Functions which previously
    required the argument `api_key` now default to the result of `bls_set_key`
+   * `get_n_series` and all functions downstream of it now support automatic
+   spanning of lists of `series_ids` longer than the API limit by breaking up
+   the query into multiple API calls.
+   
+  ## Other Changes
+   * Function arguments that previously defaulted to `NA` now default to `NULL`
+   * Major refactor of documentation
+  
+  ## Bug Fixes
+   * `get_latest_observation`'s argument was incorrectly named `survey_id`
+   instead of `series_id`
 
 # blsR 0.4.0
 
