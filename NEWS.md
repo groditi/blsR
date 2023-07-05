@@ -1,6 +1,5 @@
-# blsR (development version)
-
 # blsR 0.5.0
+
   ## New functionality
    * Managing the API key can now be done via the `BLS_API_KEY` environment
    variable. This can be done using a `.Renviron` file or manually by setting
