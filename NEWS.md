@@ -1,3 +1,5 @@
+# blsR (development version)
+
 # blsR 0.5.0
 
   ## New functionality
